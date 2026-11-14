@@ -4,12 +4,12 @@
 --------------------------------------------------------------------------------
 local G, V, Store = RPL.Game, RPL.View, RPL.Store
 
-RPL.tab = "current"      -- "current" | "saved" | "detail"
+RPL.tab = "current"      -- "current" | "saved" | "detail" | "quick"
 RPL.sel = nil            -- имя выбранного участника
-RPL.link = nil           -- id сохранённого формирования, с которым связан текущий состав
+RPL.link = nil           -- с чем связан текущий состав: id сохранённого или Store.QUICK (снимок)
 RPL.detailId = nil
 RPL.order = {}           -- визуальный порядок внутри группы: [ник] = число
-RPL.asm = nil            -- сбор: { status = { [ник] = { st, t, try } }, convertAt, roles = {} }
+RPL.asm = nil            -- сбор: { active, roles = {}, convertAt, raidSince, inviteRestAt, lootTry, rolesManual, lootManual }
 RPL.placing = 0          -- сколько секунд ещё расставлять по местам
 RPL.readyShow = false    -- показывать ли на карточках результат проверки готовности
 RPL.readyUntil = nil     -- до какого тика (после окончания проверки)
@@ -39,6 +39,7 @@ local function Acted()
 end
 
 local PlaceStep -- объявлена ниже, в разделе «Расстановка»
+local InviteMissing -- объявлена ниже, в разделе «Приглашения и сбор»
 
 --------------------------------------------------------------------------------
 -- Обновление
@@ -51,13 +52,27 @@ local function SyncAssembly( st, f )
 	for _, t in ipairs( f and f.members or {} ) do
 		if t.n ~= st.me and not st.byName[ t.n ] then left = left + 1 end
 	end
-	-- группа стала отрядом: роли выдаём не сразу, а через пару секунд (RoleStep)
-	if RPL.IsRaidKind( st.kind ) and not RPL.IsRaidKind( prevKind ) then asm.raidSince = RPL.tick end
-	-- собрано, когда все пришли И тип совпал (группа уже стала отрядом нужного вида)
+	-- группа стала отрядом: роли выдаём не сразу, а через пару секунд (RoleStep).
+	-- Как SaveRaid: отряд появился — один раз зовём всех остальных (через секунду, когда
+	-- отряд уже принимает приглашения). Дальше — «Пригласить всех» / Shift+ПКМ.
+	if RPL.IsRaidKind( st.kind ) and not RPL.IsRaidKind( prevKind ) then
+		asm.raidSince = RPL.tick
+		if asm.active and prevKind == "party" and left > 0 then asm.inviteRestAt = RPL.tick + 1 end
+	end
+	-- собрано, когда все пришли И тип совпал (группа уже стала отрядом нужного вида):
+	-- расставляем по местам; роли и дележ выставят RoleStep / LootStep
 	local kindReady = not f or f.kind == st.kind
 	if left == 0 and kindReady and asm.active then
 		asm.active = false
-		RPL.Toast( RPL.L.toastAssembled )
+		asm.inviteRestAt = nil
+		local m = V.BuildCurrent( st )
+		local off = #m.misplaced + #m.misordered
+		if off > 0 and st.canManage and RPL.IsRaidKind( st.kind ) then
+			RPL.placing = 30
+			RPL.Toast( RPL.L.toastAssembledPlace )
+		else
+			RPL.Toast( RPL.L.toastAssembled )
+		end
 	end
 end
 
@@ -169,34 +184,37 @@ function RPL.Refresh()
 	elseif wasInGroup then
 		noneSince = noneSince or RPL.tick
 		if RPL.tick - noneSince >= 2 then
-			RPL.Log( "формирование распущено: связь с сохранённым сброшена" ) --@debug
+			RPL.Log( "вышли из формирования: связь сброшена" ) --@debug
 			ResetLink()
-			RPL.noAutoLink = nil
 			wasInGroup, noneSince = false, nil
 		end
 	end
 	if RPL.sel and not st.byName[ RPL.sel ] then RPL.sel = nil end
-	if RPL.link and not Store.Get( RPL.link ) then RPL.link = nil end
-	-- в группе/отряде без связи: ищем сохранённое с тем же типом и составом
-	-- (после перезахода связь восстанавливается так или из конфига)
-	if not RPL.link and st.kind ~= "none" and not RPL.noAutoLink then
-		local names = {}
+	if RPL.link and not Store.Get( RPL.link ) then ResetLink() end
+	-- Связь — только действием игрока (сбор, скрепка, ПКМ), никакого угадывания.
+	-- Собирали вне группы, а вступили в чужое формирование (наши приглашения у людей
+	-- теперь недействительны): мы не лидер и никого из собираемого рядом нет — сбор отменён.
+	if prevKind == "none" and st.kind ~= "none" and RPL.asm and RPL.asm.active and not st.isLeader then
+		local target = V.Target( Store.Get( RPL.link ) )
+		local ours = false
 		for _, e in ipairs( st.list ) do
-			if not e.foreign then names[ #names + 1 ] = e.name end -- чужие серверы и фракции не сохраняются
+			if e.name ~= st.me and target[ e.name ] then ours = true break end
 		end
-		RPL.link = Store.FindMatch( st.kind, names )
-		if RPL.link then
-			RPL.Log( "связь восстановлена:", Store.Get( RPL.link ).name ) --@debug
-		else
-			-- точного совпадения нет — берём самое похожее и говорим об этом
-			RPL.link = Store.FindBest( st.kind, names, st.me )
-			if RPL.link then RPL.Toast( RPL.F( RPL.L.linkGuess, Store.Get( RPL.link ).name ) ) end
+		if not ours then
+			ResetLink()
+			RPL.Toast( RPL.L.toastForeignInvite )
 		end
 	end
 	if st.kind ~= "none" then Store.SetLink( RPL.link ) end
 	local f = Store.Get( RPL.link )
 	SyncAssembly( st, f )
 	MaybeConvert( st, f )
+	-- отряд появился (после приглашения первого) — один раз зовём остальных
+	local asm = RPL.asm
+	if asm and asm.active and asm.inviteRestAt and RPL.tick >= asm.inviteRestAt then
+		asm.inviteRestAt = nil
+		InviteMissing( f )
+	end
 	prevKind = st.kind
 	V.Render()
 	-- одна автоматическая операция за раз
@@ -217,11 +235,11 @@ function RPL.Refresh()
 end
 
 --------------------------------------------------------------------------------
--- Приглашения
+-- Приглашения и сбор
 -- Автоповторов и статусов приглашений нет: API не даёт надёжно понять, чем кончилось
 -- приглашение (отказ «запретная территория» в отряд приходит без ника, об истечении
--- приглашения событий нет вовсе). У недостающих — кнопка «+», внизу — «Пригласить всех».
--- Решает лидер.
+-- приглашения событий нет вовсе). У недостающих — кнопка «+», внизу — «Пригласить всех»,
+-- на кнопке RPL — Shift+ПКМ. Решает лидер.
 --------------------------------------------------------------------------------
 local function EnsureAsm()
 	RPL.asm = RPL.asm or { roles = {} }
@@ -249,29 +267,31 @@ local function Missing( st, f )
 	return list
 end
 
--- Отряд, а мы вне группы: зовём только первого по местам. Приглашения в группу всем
--- сразу висели бы открытыми, когда группа станет отрядом. Кто примет — группа
--- станет отрядом (MaybeConvert), остальных лидер зовёт кнопками.
-function RPL.RaidFromScratch( st, f )
-	return f ~= nil and st ~= nil and RPL.IsRaidKind( f.kind ) and st.kind == "none"
-end
-
-local function InviteMissing( f )
+-- Позвать недостающих f:
+--   вне группы: группа — всех; отряд — первого по местам. Приглашения в группу пачкой
+--     повисли бы открытыми, когда она станет отрядом. Кто примет — группа станет отрядом
+--     (MaybeConvert), и остальных аддон позовёт сам один раз (SyncAssembly, inviteRestAt);
+--   в группе, а собираем отряд: сначала превращаем группу, остальных — когда отряд появится;
+--   иначе: всех, сколько помещается. Места считаются по всем в составе, и по
+--     «не из состава» тоже: по порядку мест последние не помещаются.
+InviteMissing = function( f )
 	local st = RPL.st
 	if not f or not st then return 0 end
 	EnsureAsm()
 	local list = Missing( st, f )
-	if RPL.RaidFromScratch( st, f ) then
+	if st.kind == "none" and RPL.IsRaidKind( f.kind ) then
 		if list[ 1 ] then RPL.InviteNow( list[ 1 ].n ) return 1 end
 		return 0
 	end
-	-- отряд, а мы в группе: сначала группа станет отрядом (MaybeConvert), потом — всех
-	if RPL.IsRaidKind( f.kind ) and st.kind == "party" then return 0 end
-	local capacity = RPL.KindGroups( f.kind ) * RPL.GROUP_SIZE
-	local present = math.max( #st.list, 1 )
+	if st.kind == "party" and RPL.IsRaidKind( f.kind ) and #st.list >= 2 then
+		RPL.asm.convertAt = nil
+		MaybeConvert( st, f )
+		return 0
+	end
+	local free = V.FreeSlots( st, f )
 	local n = 0
 	for _, t in ipairs( list ) do
-		if present + n >= capacity then break end
+		if n >= free then break end
 		RPL.InviteNow( t.n )
 		n = n + 1
 	end
@@ -281,6 +301,30 @@ end
 local function InviteOne( name )
 	EnsureAsm()
 	RPL.InviteNow( name )
+end
+
+-- Собрать формирование key (id сохранённого или Store.QUICK) или привести его в боевую
+-- готовность, если мы уже в нём: позвать недостающих, а когда пришли все — расставить,
+-- выдать роли и дележ (SyncAssembly, RoleStep, LootStep). fresh — заново выдать роли и
+-- дележ, даже если их меняли руками (Shift+ПКМ — явная команда «как в сохранённом»).
+local function Assemble( key, fresh )
+	local f = Store.Get( key )
+	local st = RPL.st
+	if not f or not st then return end
+	if RPL.KindBlocked( st.kind, f.kind ) then
+		RPL.Toast( RPL.F( RPL.L.noteKind, RPL.L.kindIn[ st.kind ] or "", RPL.L.kindTo[ f.kind ] or "" ) )
+		return
+	end
+	if RPL.link ~= key or fresh then
+		RPL.order = {}
+		RPL.asm = nil
+	end
+	RPL.link = key
+	Store.SetLink( key )
+	-- сбор вне группы: связь держится, пока кто-нибудь не примет приглашение
+	if st.kind == "none" then wasInGroup, noneSince = false, nil end
+	EnsureAsm()
+	InviteMissing( f )
 end
 
 --------------------------------------------------------------------------------
@@ -395,7 +439,7 @@ local function OpenMenu( kind )
 	else
 		items = ( kind == "scheme" ) and RPL.SCHEMES or RPL.QUALITIES
 	end
-	menu = { kind = kind, mode = ( RPL.tab == "detail" ) and "detail" or "current", items = items }
+	menu = { kind = kind, mode = ( RPL.tab == "detail" or RPL.tab == "quick" ) and "detail" or "current", items = items }
 	local P = RPL.Px
 	-- меню связи шире: в нём названия формирований
 	local menuW = P( kind == "link" and 320 or 180 )
@@ -451,18 +495,17 @@ local function OnMenuPick( params )
 	if m.kind == "link" then
 		if it.unlink then
 			ResetLink()
-			RPL.noAutoLink = true -- не связывать заново сами, пока не выйдем из формирования
 			RPL.Toast( RPL.L.linkUnlinked )
 		elseif it.id ~= RPL.link then
+			-- скрепка = «мы в этом сохранённом»: работают Shift+ПКМ, «Пригласить всех», расстановка
 			ResetLink()
 			RPL.link = it.id
-			RPL.noAutoLink = nil
 			Store.SetLink( it.id )
 			local f = Store.Get( it.id )
 			RPL.Toast( RPL.F( RPL.L.linkDone, f and f.name or "" ) )
 		end
 	elseif m.mode == "detail" then
-		local f = Store.Get( RPL.detailId )
+		local f = V.DetailF()
 		if f then
 			Store.SetLoot( f.id, m.kind == "scheme" and it.key or f.lootScheme, m.kind == "quality" and it.key or f.lootQuality )
 			RPL.savedDirty = true
@@ -619,7 +662,7 @@ local function OnKickSelected()
 end
 
 local function OnInviteAll()
-	InviteMissing( Store.Get( RPL.link ) )
+	if RPL.link then Assemble( RPL.link, false ) end
 	RPL.Refresh()
 end
 
@@ -743,7 +786,7 @@ local function OnDelete( params )
 	local id = RowId( params )
 	local f = id and Store.Delete( id )
 	if not f then return end
-	if RPL.link == id then RPL.link = nil RPL.asm = nil end
+	if RPL.link == id then ResetLink() end
 	RPL.savedDirty = true
 	RPL.Toast( RPL.F( RPL.L.toastDeleted, f.name ) )
 	RPL.Refresh()
@@ -753,18 +796,73 @@ local function RolesText( f )
 	return "помощники=[" .. table.concat( f.assist or {}, ", " ) .. "] добыча=" .. tostring( f.loot )
 end
 
+-- «Пригласить всех» на карточке сохранённого и во вкладке «Быстрое»
 local function OnStartInvite()
-	local f = Store.Get( RPL.detailId )
-	if not f then return end
+	local f, key = V.DetailF()
+	local st = RPL.st
+	if not f or not st or not V.CanAssemble( st, f, key ) then return end
 	RPL.Log( "сбор:", f.name, RolesText( f ) ) --@debug
-	if RPL.link ~= f.id then
-		RPL.order = {}
-		RPL.asm = nil
-	end
-	RPL.link = f.id
-	EnsureAsm()
-	InviteMissing( f )
+	Assemble( key, false )
 	SetTab( "current" )
+end
+
+--------------------------------------------------------------------------------
+-- Кнопка RPL: ПКМ — запомнить, Shift+ПКМ — собрать / привести в готовность
+--------------------------------------------------------------------------------
+-- ПКМ: мы в сохранённом — в «Быстрое» ложится ссылка на него (снимок не нужен, связь не
+-- трогаем). Иначе — снимок текущего состава, и «Текущее» сразу связано с ним: это тот же
+-- отряд. Вне группы — ничего.
+local function OnSnapshot()
+	local st = RPL.st
+	if not st or st.kind == "none" or not RPL.model then return end
+	local f = Store.Get( RPL.link )
+	if f and RPL.link ~= Store.QUICK then
+		Store.SetQuickRef( RPL.link )
+		RPL.Toast( RPL.F( RPL.L.toastQuickRef, f.name ) )
+		return
+	end
+	local rec = V.BuildRecord( st, RPL.model )
+	if #rec.members == 0 then return end
+	local name = RPL.F( RPL.L.quickName, RPL.L.kindShort[ rec.kind ] or "", #rec.members, RPL.Stamp() )
+	Store.SetQuickSnap( rec, name )
+	RPL.order = {}
+	RPL.asm = nil
+	RPL.link = Store.QUICK
+	Store.SetLink( Store.QUICK )
+	RPL.Toast( RPL.F( RPL.L.toastQuickSnap, name ) )
+end
+
+-- Shift+ПКМ: вне группы — собрать «Быстрое»; в своём (связанном) формировании —
+-- привести его в боевую готовность; в неизвестном составе или без прав — ничего.
+local function OnQuickAssemble()
+	local st = RPL.st
+	if not st then return end
+	if st.kind == "none" then
+		local key = Store.QuickKey()
+		if key then Assemble( key, true ) end
+		return
+	end
+	if not st.canInvite or not RPL.link or not Store.Get( RPL.link ) then return end
+	Assemble( RPL.link, true )
+end
+
+local function OnRmb( params )
+	if RPL.Shift( params ) then OnQuickAssemble() else OnSnapshot() end
+	RPL.Refresh()
+end
+
+-- «Быстрое»: снимок удаляем (если «Текущее» было связано с ним — оно становится
+-- неизвестным), ссылку на сохранённое просто убираем
+local function OnQuickDelete()
+	if Store.QuickIsSnap() then
+		Store.ClearQuick()
+		if RPL.link == Store.QUICK then ResetLink() end
+		RPL.Toast( RPL.L.toastQuickDeleted )
+	elseif Store.QuickKey() then
+		Store.ClearQuick()
+		RPL.Toast( RPL.L.toastQuickRemoved )
+	end
+	RPL.Refresh()
 end
 
 --------------------------------------------------------------------------------
@@ -780,6 +878,12 @@ local function OpenDialog( mode, id )
 		title = RPL.L.dlgRename
 		value = f.name
 		auto = Store.AutoName( f.kind, f.id )
+	elseif mode == "quick" then
+		local f = Store.Get( Store.QUICK )
+		if not f then return end
+		title = RPL.L.dlgSaveQuick
+		value = ""
+		auto = Store.AutoName( f.kind, Store.NextId() )
 	else
 		local raidKind = RPL.IsRaidKind( st.kind )
 		title = raidKind and RPL.L.dlgSaveRaid or RPL.L.dlgSaveParty
@@ -810,6 +914,9 @@ local function OnDialogOk()
 		local f = Store.Get( d.id )
 		except = d.id
 		if final == "" and f then final = Store.AutoName( f.kind, f.id ) end
+	elseif d.mode == "quick" then
+		local f = Store.Get( Store.QUICK )
+		if final == "" and f then final = Store.AutoName( f.kind, Store.NextId() ) end
 	elseif final == "" and RPL.st then
 		final = Store.AutoName( RPL.st.kind, Store.NextId() )
 	end
@@ -821,13 +928,29 @@ local function OnDialogOk()
 		Store.Rename( d.id, name )
 		local f = Store.Get( d.id )
 		RPL.Toast( RPL.F( RPL.L.toastRenamed, f and f.name or name ) )
+	elseif d.mode == "quick" then
+		-- снимок из «Быстрого» -> в «Сохранённые»; «Быстрое» и связь переходят на сохранённое
+		local snap = Store.Get( Store.QUICK )
+		if not snap then CloseDialog() return end
+		local rec = RPL.Copy( snap )
+		rec.id, rec.name = nil, nil
+		local id = Store.Add( rec, name )
+		Store.SetQuickRef( id )
+		if RPL.link == Store.QUICK then
+			RPL.link = id
+			Store.SetLink( id )
+		end
+		RPL.Toast( RPL.F( RPL.L.toastSaved, Store.Get( id ).name ) )
 	else
 		local st = RPL.st
 		if st.kind == "none" then CloseDialog() return end
 		local rec, skipped = V.BuildRecord( st, RPL.model )
 		local id = Store.Add( rec, name )
 		RPL.Log( "сохранено:", Store.Get( id ).name, RolesText( Store.Get( id ) ) ) --@debug
+		-- сохранили состав, снятый в «Быстрое», — «Быстрое» теперь ссылается на сохранённое
+		if RPL.link == Store.QUICK and Store.QuickIsSnap() then Store.SetQuickRef( id ) end
 		RPL.link = id
+		Store.SetLink( id )
 		RPL.order = {}
 		local msg = RPL.F( RPL.L.toastSaved, Store.Get( id ).name )
 		if skipped > 0 then msg = RPL.F( RPL.L.toastForeign, msg, skipped ) end
@@ -840,7 +963,7 @@ end
 
 local function OnUpdate()
 	local f = Store.Get( RPL.link )
-	if not f or RPL.st.kind == "none" then return end
+	if not f or RPL.link == Store.QUICK or RPL.st.kind == "none" then return end
 	local rec, skipped = V.BuildRecord( RPL.st, RPL.model )
 	Store.Update( f.id, rec )
 	RPL.Log( "обновлено:", f.name, RolesText( f ) ) --@debug
@@ -988,6 +1111,10 @@ local REACTIONS = {
 	rpl_close = OnClose,
 	rpl_tab_current = function() SetTab( "current" ) end,
 	rpl_tab_saved = function() SetTab( "saved" ) end,
+	rpl_tab_quick = function() SetTab( "quick" ) end,
+	rpl_rmb = OnRmb,
+	rpl_quick_save = function() if Store.QuickIsSnap() then OpenDialog( "quick" ) end end,
+	rpl_quick_delete = OnQuickDelete,
 	rpl_slot = OnSlot,
 	rpl_swap = OnSwap,
 	rpl_home = OnHome,
@@ -1057,8 +1184,10 @@ local function Start()
 	started = true
 	Store.LoadSettings() --@debug
 	Store.Load()
-	RPL.link = Store.GetLink() -- проверится при первом чтении состава
-	-- связь из конфига: если после входа 2 секунды подряд вне группы — сбросится как при роспуске
+	-- связь из конфига переживает перезаход: вне игры сменить отряд нельзя.
+	-- Если после входа 2 секунды подряд вне группы — сбросится, как при выходе из формирования.
+	RPL.link = Store.GetLink()
+	if not Store.Get( RPL.link ) then RPL.link = nil end
 	wasInGroup = RPL.link ~= nil
 	V.Init()
 	RPL.Show( V.ui.window, false )

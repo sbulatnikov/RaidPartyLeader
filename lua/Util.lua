@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------------
 Global( "RPL", {} )
 
-RPL.VERSION = "0.9.9"
+RPL.VERSION = "0.11.0"
 RPL.tick = 0                 -- счётчик секунд (EVENT_SECOND_TIMER)
 RPL.GROUP_SIZE = 6
 RPL.UI_SCALE = 1.2          -- масштаб интерфейса; должен совпадать с RPL_SCALE генератора
@@ -17,7 +17,6 @@ end
 RPL.NICK_MIN = 3
 RPL.NICK_MAX = 14
 RPL.NAME_MAX = 40            -- длина названия формирования
-RPL.INVITE_TIMEOUT = 30      -- приглашение в игре живёт 30 секунд: без ответа — «не смог принять»
 RPL.TOAST_TIME = 8          -- секунд; пока тост тащат, он не исчезает
 RPL.DEBUG = false           -- отладка в чат; включается в конфиге: debug=true (см. Storage.LoadSettings) --@debug
 
@@ -29,6 +28,10 @@ RPL.L = {
 	kindRaid = "Отряд",
 	kindSmall = "Малый отряд",
 	kindNone = "Без группы",
+	kindNoneAsm = "Без группы · идёт сбор",
+	kindShort = { party = "Группа", small = "Малый", raid = "Отряд" },
+	kindIn = { party = "группе", small = "малом отряде", raid = "отряде" },
+	kindTo = { party = "группу", small = "малый отряд", raid = "отряд" },
 	autoParty = "Группа #%d",
 	autoRaid = "Отряд #%d",
 	groupTitle = "Группа %d",
@@ -38,17 +41,28 @@ RPL.L = {
 	currentParty = "Текущая группа",
 	currentRaid = "Текущий отряд",
 	notSaved = "Не сохранено",
-	startRaid = "Начать сбор",
 	linkItem = "%s · %s/%s",
 	linkCurrent = " (текущее)",
 	linkUnlink = "Отвязать от сохранённого",
 	linkNone = "Сохранённых формирований нет",
 	linkDone = "Связано с «%s»",
 	linkUnlinked = "Связь с сохранённым снята",
-	linkGuess = "Похоже на «%s» — сравниваю с ним. Выбрать другое: кнопка со скрепкой",
+	linkQuick = "Не сохранено · %s",
+	quickName = "%s %d · %s",
+	quickMetaSnap = "Снимок по ПКМ · не сохранён · %d участн.",
+	quickMetaRef = "Из «Сохранённых» · %d участн.",
+	toastQuickSnap = "Снимок в «Быстрое»: %s",
+	toastQuickRef = "В «Быстрое»: %s",
+	toastQuickDeleted = "Снимок удалён",
+	toastQuickRemoved = "Убрано из «Быстрого» (в «Сохранённых» осталось)",
+	toastForeignInvite = "Вы вступили в чужое формирование — сбор отменён",
+	noteOther = "Вы сейчас в «%s». Чтобы собирать это, выйдите из него или выберите это формирование скрепкой в «Текущем».",
+	noteUnknown = "Вы в группе, которая ни с чем не связана. Выберите это формирование скрепкой в «Текущем» или выйдите из группы.",
+	noteKind = "Вы в %s — его нельзя превратить в %s. Выйдите из него, чтобы собрать это.",
 	diffPrefix = "Изменено: ",
 	diffMissing = "нет %d",
-	diffAdded = "новых %d",
+	diffAdded = "не из состава %d",
+	diffOverflow = "не помещаются: %s",
 	diffRoles = "роли",
 	diffLoot = "дележ",
 	diffQuality = "ценность",
@@ -60,6 +74,7 @@ RPL.L = {
 	dlgSaveParty = "Сохранить группу",
 	dlgSaveRaid = "Сохранить отряд",
 	dlgRename = "Переименовать",
+	dlgSaveQuick = "Сохранить снимок",
 	dlgHint = "Если оставить пустым — «%s»",
 	toastSaved = "Сохранено: %s",
 	toastUpdated = "Обновлено: %s",
@@ -74,6 +89,7 @@ RPL.L = {
 	toastNotLeader = "Нужны права лидера или помощника",
 	toastOnlyLeader = "Только лидер может назначать помощника и ответственного за добычу и исключать из отряда",
 	toastAssembled = "Формирование собрано",
+	toastAssembledPlace = "Формирование собрано — расставляю по местам",
 	toastPlaced = "Все на своих местах",
 	toastForeign = "%s. Игроки с других серверов и из других фракций не сохранены: %s",
 	toastReadyBusy = "Проверка готовности уже идёт",
@@ -83,8 +99,6 @@ RPL.L = {
 	toastReadyAll = "Готовы все: %s",
 	toastReadyNot = "Не готовы: %s",
 	toastReadyWait = "Не ответили: %s",
-	toastRaidFailed = "Отряд: %s",
-	toastInviteFailed = "Не удалось пригласить %s",
 	noteNotLeader = "Приглашать может только лидер",
 	aspectWord = "Аспект",
 	aspectNames = {
@@ -242,6 +256,25 @@ function RPL.IsRaidKind( kind )
 	return kind == "raid" or kind == "small"
 end
 
+-- В игре есть только переход «группа -> малый отряд / отряд». Малый отряд и отряд друг
+-- в друга не превращаются, отряд в группу — тоже: собрать f в таком составе нельзя.
+function RPL.KindBlocked( stKind, fKind )
+	return stKind ~= "none" and stKind ~= "party" and stKind ~= fKind
+end
+
+-- «15.11 21:40» — время снимка по часам компьютера
+function RPL.Stamp()
+	local d = common.GetLocalDateTime()
+	return string.format( "%02d.%02d %02d:%02d", d.d, d.m, d.h, d.min )
+end
+
+-- Зажат ли Shift при нажатии (params.kbFlags реакции, флаги KBF_...)
+function RPL.Shift( params )
+	local f = params and params.kbFlags
+	if type( f ) ~= "number" then return false end
+	return math.floor( f / KBF_SHIFT ) % 2 == 1
+end
+
 --------------------------------------------------------------------------------
 -- Виджеты
 --------------------------------------------------------------------------------
@@ -288,12 +321,6 @@ function RPL.Enable( w, on )
 	on = on and true or false
 	local m = M( w )
 	if m.enable ~= on then m.enable = on w:Enable( on ) end
-end
-
--- Автоповтор приглашений — у тех, кто может приглашать: лидер, в отряде ещё помощники.
--- Вне группы лидером станешь ты сам.
-function RPL.CanAutoRetry( st )
-	return st ~= nil and ( st.kind == "none" or st.canInvite ) and true or false
 end
 
 -- Прозрачность виджета вместе с детьми (для составных кнопок, у которых
