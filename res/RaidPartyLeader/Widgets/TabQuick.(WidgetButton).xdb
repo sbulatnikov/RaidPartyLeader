@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetButton>
+	<Name>TabQuick</Name>
+	<Placement>
+		<X>
+			<Pos>314</Pos>
+			<Size>120</Size>
+		</X>
+		<Y>
+			<Pos>5</Pos>
+			<Size>38</Size>
+		</Y>
+	</Placement>
+	<IgnoreDblClick>true</IgnoreDblClick>
+	<TextTag>button_label</TextTag>
+	<Variants>
+		<Item>
+			<TextFileRef href="../Texts/TabQuick.txt" />
+			<LayerHighlight href="Textures/GhostHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/Transparent.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/TabQuick.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/GhostHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/Transparent.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/TabQuick.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_tab_quick</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+	</Variants>
+	<TextStyle>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+	<Children>
+		<Item href="TabQuickLine.(WidgetPanel).xdb" />
+	</Children>
+</WidgetButton>

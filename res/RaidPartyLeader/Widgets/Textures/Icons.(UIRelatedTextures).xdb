@@ -66,6 +66,10 @@
 			<textureItem href="StMissing.(UITextureElement).xdb" />
 		</Item>
 		<Item>
+			<name>STRANGER</name>
+			<textureItem href="StStranger.(UITextureElement).xdb" />
+		</Item>
+		<Item>
 			<name>READY</name>
 			<textureItem href="StReady.(UITextureElement).xdb" />
 		</Item>

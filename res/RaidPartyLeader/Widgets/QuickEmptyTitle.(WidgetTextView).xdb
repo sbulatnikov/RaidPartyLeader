@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>QuickEmptyTitle</Name>
+	<Placement>
+		<X>
+			<Pos>22</Pos>
+			<Size>528</Size>
+		</X>
+		<Y>
+			<Pos>31</Pos>
+			<Size>24</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/QuickEmptyTitle.txt" />
+</WidgetTextView>

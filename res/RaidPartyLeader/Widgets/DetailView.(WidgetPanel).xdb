@@ -19,6 +19,8 @@
 		<Item href="DetailKindParty.(WidgetPanel).xdb" />
 		<Item href="DetailKindRaid.(WidgetPanel).xdb" />
 		<Item href="DetailKindSmall.(WidgetPanel).xdb" />
+		<Item href="QuickSaveButton.(WidgetButton).xdb" />
+		<Item href="QuickDeleteButton.(WidgetButton).xdb" />
 		<Item href="StartInviteButton.(WidgetButton).xdb" />
 		<Item href="InviteNote.(WidgetTextView).xdb" />
 	</Children>
