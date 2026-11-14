@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>NoSavedText</Name>
+	<Placement>
+		<X>
+			<Pos>22</Pos>
+			<Size>528</Size>
+		</X>
+		<Y>
+			<Pos>31</Pos>
+			<Size>48</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/NoSavedText.txt" />
+	<TextStyle>
+		<multiline>true</multiline>
+		<wrapText>true</wrapText>
+	</TextStyle>
+	<Visible>false</Visible>
+</WidgetTextView>

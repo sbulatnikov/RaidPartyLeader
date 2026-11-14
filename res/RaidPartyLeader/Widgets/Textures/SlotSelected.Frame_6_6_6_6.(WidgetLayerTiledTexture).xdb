@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetLayerTiledTexture>
+	<Color>0xffffffff</Color>
+	<Grayed>false</Grayed>
+	<BlendEffect>BLEND_EFFECT_ALPHABLND</BlendEffect>
+	<flatPlacement>false</flatPlacement>
+	<textureItem href="SlotSelected.Studio.(UISingleTexture).xdb" />
+	<Layout>
+		<LeftX>6</LeftX>
+		<MiddleX>52</MiddleX>
+		<RightX>6</RightX>
+		<TopY>6</TopY>
+		<MiddleY>52</MiddleY>
+		<BottomY>6</BottomY>
+	</Layout>
+</WidgetLayerTiledTexture>

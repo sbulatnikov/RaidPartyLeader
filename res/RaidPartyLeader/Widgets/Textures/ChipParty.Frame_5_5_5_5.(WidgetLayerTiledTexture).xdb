@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetLayerTiledTexture>
+	<Color>0xffffffff</Color>
+	<Grayed>false</Grayed>
+	<BlendEffect>BLEND_EFFECT_ALPHABLND</BlendEffect>
+	<flatPlacement>false</flatPlacement>
+	<textureItem href="ChipParty.Studio.(UISingleTexture).xdb" />
+	<Layout>
+		<LeftX>5</LeftX>
+		<MiddleX>54</MiddleX>
+		<RightX>5</RightX>
+		<TopY>5</TopY>
+		<MiddleY>54</MiddleY>
+		<BottomY>5</BottomY>
+	</Layout>
+</WidgetLayerTiledTexture>

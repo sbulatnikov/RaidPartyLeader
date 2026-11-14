@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetButton>
+	<Name>HomeButton</Name>
+	<Placement>
+		<X>
+			<Size>26</Size>
+			<Align>WIDGET_ALIGN_HIGH</Align>
+			<HighPos>7</HighPos>
+		</X>
+		<Y>
+			<Pos>5</Pos>
+			<Size>26</Size>
+		</Y>
+	</Placement>
+	<IgnoreDblClick>true</IgnoreDblClick>
+	<TextTag>button_label</TextTag>
+	<Variants>
+		<Item>
+			<TextFileRef href="../Texts/HomeButton.txt" />
+			<LayerHighlight href="Textures/BtnPinkHover.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/BtnPinkNormal.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/HomeButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/BtnPinkPressed.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/BtnPinkDisabled.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/HomeButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_home</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+	</Variants>
+	<TextStyle>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+	<Children>
+		<Item href="HomeIcon.(WidgetPanel).xdb" />
+	</Children>
+	<Visible>false</Visible>
+</WidgetButton>

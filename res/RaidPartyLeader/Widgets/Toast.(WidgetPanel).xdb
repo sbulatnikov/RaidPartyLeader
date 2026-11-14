@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>Toast</Name>
+	<Placement>
+		<X>
+			<Pos>0</Pos>
+			<Size>504</Size>
+			<Align>WIDGET_ALIGN_CENTER</Align>
+		</X>
+		<Y>
+			<Size>43</Size>
+			<Align>WIDGET_ALIGN_HIGH</Align>
+			<HighPos>192</HighPos>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/ToastFrame.Frame_8_8_8_8.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="ToastText.(WidgetTextView).xdb" />
+	</Children>
+	<Priority>950</Priority>
+	<Visible>false</Visible>
+</WidgetPanel>

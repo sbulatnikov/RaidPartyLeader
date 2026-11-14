@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>DetailMeta</Name>
+	<Placement>
+		<X>
+			<Pos>62</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>108</HighPos>
+		</X>
+		<Y>
+			<Pos>43</Pos>
+			<Size>19</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/DetailMeta.txt" />
+</WidgetTextView>

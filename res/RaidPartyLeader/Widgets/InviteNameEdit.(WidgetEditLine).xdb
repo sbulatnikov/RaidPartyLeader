@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetEditLine>
+	<Name>InviteNameEdit</Name>
+	<Placement>
+		<X>
+			<Pos>10</Pos>
+			<Size>161</Size>
+		</X>
+		<Y>
+			<Pos>0</Pos>
+			<Size>36</Size>
+		</Y>
+	</Placement>
+	<Cursor1Layer href="Textures/Cursor.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<Cursor2Layer href="Textures/Cursor.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<CursorWidth>1</CursorWidth>
+	<CursorChangeTimeMs>500</CursorChangeTimeMs>
+	<ReactionEnter>InviteNameEdit_enter</ReactionEnter>
+	<ReactionEsc>InviteNameEdit_esc</ReactionEsc>
+	<TextStyle>
+		<multiline>false</multiline>
+		<wrapText>false</wrapText>
+		<ellipsis>true</ellipsis>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+	<isPassword>false</isPassword>
+	<maxSymbolsCount>14</maxSymbolsCount>
+	<FormatFileRef href="../Texts/InviteNameEdit.txt" />
+	<selectionLayer href="Textures/Selection.Stretch.(WidgetLayerSimpleTexture).xdb" />
+</WidgetEditLine>

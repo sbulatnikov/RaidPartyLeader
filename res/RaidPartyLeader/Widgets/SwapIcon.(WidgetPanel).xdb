@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>SwapIcon</Name>
+	<Placement>
+		<X>
+			<Pos>6</Pos>
+			<Size>14</Size>
+		</X>
+		<Y>
+			<Pos>6</Pos>
+			<Size>14</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/IconSwap.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+</WidgetPanel>

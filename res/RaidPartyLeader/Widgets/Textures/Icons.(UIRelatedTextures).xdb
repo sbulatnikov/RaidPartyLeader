@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<UIRelatedTextures>
+	<Items>
+		<Item>
+			<name>Q_JUNK</name>
+			<textureItem href="QualityJunk.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>Q_GOODS</name>
+			<textureItem href="QualityGoods.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>Q_COMMON</name>
+			<textureItem href="QualityCommon.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>Q_UNCOMMON</name>
+			<textureItem href="QualityUncommon.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>Q_RARE</name>
+			<textureItem href="QualityRare.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>Q_EPIC</name>
+			<textureItem href="QualityEpic.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>Q_LEGENDARY</name>
+			<textureItem href="QualityLegendary.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>Q_RELIC</name>
+			<textureItem href="QualityRelic.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>DOT_OK</name>
+			<textureItem href="DotOk.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>DOT_WARN</name>
+			<textureItem href="DotWarn.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>DOT_BAD</name>
+			<textureItem href="DotBad.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>INVITED</name>
+			<textureItem href="StInvited.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>DECLINED</name>
+			<textureItem href="StDeclined.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>FAILED</name>
+			<textureItem href="StFailed.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>OFFLINE</name>
+			<textureItem href="StOffline.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>MISSING</name>
+			<textureItem href="StMissing.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>READY</name>
+			<textureItem href="StReady.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>FAC_LEAGUE</name>
+			<textureItem href="BadgeLeague.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>FAC_EMPIRE</name>
+			<textureItem href="BadgeEmpire.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>FAC_OTHER</name>
+			<textureItem href="BadgeFaction.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>MISPLACED</name>
+			<textureItem href="IconFlag.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>CHECK_ON</name>
+			<textureItem href="CheckOn.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>CHECK_OFF</name>
+			<textureItem href="CheckOff.(UITextureElement).xdb" />
+		</Item>
+	</Items>
+</UIRelatedTextures>

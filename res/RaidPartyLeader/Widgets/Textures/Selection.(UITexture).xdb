@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<UITexture>
+  <mipSW>-1</mipSW>
+  <mipsNumber>1</mipsNumber>
+  <generateMipChain>false</generateMipChain>
+  <type>DXT5</type>
+  <width>4</width>
+  <height>4</height>
+  <realWidth>4</realWidth>
+  <realHeight>4</realHeight>
+  <disableLODControl>false</disableLODControl>
+  <alphaTex>true</alphaTex>
+  <binaryFileSize>25</binaryFileSize>
+  <binaryFile href="Selection.(UITexture).bin" />
+  <sourceFile href="" />
+  <sourceFileCRC>0</sourceFileCRC>
+  <wrap>false</wrap>
+</UITexture>

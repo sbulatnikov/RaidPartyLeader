@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>ActionsBar</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>17</HighPos>
+		</X>
+		<Y>
+			<Pos>425</Pos>
+			<Size>38</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="InviteAllButton.(WidgetButton).xdb" />
+		<Item href="PlaceAllButton.(WidgetButton).xdb" />
+		<Item href="LeaderButton.(WidgetButton).xdb" />
+		<Item href="ReadyButton.(WidgetButton).xdb" />
+		<Item href="AssistButton.(WidgetButton).xdb" />
+		<Item href="LootButton.(WidgetButton).xdb" />
+		<Item href="KickSelButton.(WidgetButton).xdb" />
+	</Children>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>

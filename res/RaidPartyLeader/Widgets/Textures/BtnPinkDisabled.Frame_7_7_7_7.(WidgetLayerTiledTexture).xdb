@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetLayerTiledTexture>
+	<Color>0xffffffff</Color>
+	<Grayed>false</Grayed>
+	<BlendEffect>BLEND_EFFECT_ALPHABLND</BlendEffect>
+	<flatPlacement>false</flatPlacement>
+	<textureItem href="BtnPinkDisabled.Studio.(UISingleTexture).xdb" />
+	<Layout>
+		<LeftX>7</LeftX>
+		<MiddleX>50</MiddleX>
+		<RightX>7</RightX>
+		<TopY>7</TopY>
+		<MiddleY>50</MiddleY>
+		<BottomY>7</BottomY>
+	</Layout>
+</WidgetLayerTiledTexture>

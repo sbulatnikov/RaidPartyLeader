@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>Header</Name>
+	<Placement>
+		<X>
+			<Pos>1</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>1</HighPos>
+		</X>
+		<Y>
+			<Pos>1</Pos>
+			<Size>52</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/HeaderBack.Frame_10_10_10_10.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="AccentMark.(WidgetPanel).xdb" />
+		<Item href="TitleText.(WidgetTextView).xdb" />
+		<Item href="ModeChip.(WidgetPanel).xdb" />
+		<Item href="CloseButton.(WidgetButton).xdb" />
+	</Children>
+</WidgetPanel>

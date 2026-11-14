@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetForm>
+	<Name>MainForm</Name>
+	<Priority>1000</Priority>
+	<Children>
+		<Item href="RPLWindow.(WidgetPanel).xdb" />
+		<Item href="RPLHost.(WidgetPanel).xdb" />
+		<Item href="SaveDialog.(WidgetPanel).xdb" />
+		<Item href="Toast.(WidgetPanel).xdb" />
+	</Children>
+	<Placement>
+		<X>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+		</X>
+		<Y>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+		</Y>
+	</Placement>
+	<PickChildrenOnly>true</PickChildrenOnly>
+	<Visible>true</Visible>
+</WidgetForm>

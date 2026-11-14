@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>MenuDot3</Name>
+	<Placement>
+		<X>
+			<Pos>12</Pos>
+			<Size>12</Size>
+		</X>
+		<Y>
+			<Pos>10</Pos>
+			<Size>12</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/QualityRare.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+</WidgetPanel>

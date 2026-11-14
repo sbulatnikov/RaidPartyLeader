@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<UIAddon>
+	<Name>RaidPartyLeader</Name>
+	<AutoStart>true</AutoStart>
+	<userAddonInfo>
+		<name href="Texts/AddonName.txt" />
+		<description href="Texts/AddonDescription.txt" />
+		<author>NoMercy</author>
+		<version>0.9.9</version>
+	</userAddonInfo>
+	<ScriptFileRefs>
+		<Item href="Scripts/LibDnD.lua" />
+		<Item href="Scripts/Util.lua" />
+		<Item href="Scripts/Storage.lua" />
+		<Item href="Scripts/Game.lua" />
+		<Item href="Scripts/View.lua" />
+		<Item href="Scripts/Main.lua" />
+	</ScriptFileRefs>
+	<Form href="Widgets/MainForm.(WidgetForm).xdb" />
+	<texturesGroups>
+		<Item>
+			<groupName>Classes</groupName>
+			<textures href="Widgets/Textures/Classes.(UIRelatedTextures).xdb" />
+		</Item>
+		<Item>
+			<groupName>Aspects</groupName>
+			<textures href="Widgets/Textures/Aspects.(UIRelatedTextures).xdb" />
+		</Item>
+		<Item>
+			<groupName>Icons</groupName>
+			<textures href="Widgets/Textures/Icons.(UIRelatedTextures).xdb" />
+		</Item>
+	</texturesGroups>
+</UIAddon>

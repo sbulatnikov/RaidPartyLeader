@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetButton>
+	<Name>RPLButton</Name>
+	<Placement>
+		<X>
+			<Pos>4</Pos>
+			<Size>61</Size>
+		</X>
+		<Y>
+			<Pos>6</Pos>
+			<Size>31</Size>
+		</Y>
+	</Placement>
+	<IgnoreDblClick>true</IgnoreDblClick>
+	<TextTag>button_label</TextTag>
+	<Variants>
+		<Item>
+			<TextFileRef href="../Texts/RPLButton.txt" />
+			<LayerHighlight href="Textures/RplHover.Stretch.(WidgetLayerSimpleTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/RplNormal.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/RPLButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/RplPressed.Stretch.(WidgetLayerSimpleTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/RplDisabled.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/RPLButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_toggle</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+	</Variants>
+	<TextStyle>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+</WidgetButton>

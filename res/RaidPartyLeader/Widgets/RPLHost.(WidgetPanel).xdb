@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>RPLHost</Name>
+	<Placement>
+		<X>
+			<Pos>360</Pos>
+			<Size>73</Size>
+		</X>
+		<Y>
+			<Pos>10</Pos>
+			<Size>42</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="RPLRing.(WidgetPanel).xdb" />
+		<Item href="RPLButton.(WidgetButton).xdb" />
+		<Item href="RPLBadge.(WidgetPanel).xdb" />
+	</Children>
+	<Priority>800</Priority>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>

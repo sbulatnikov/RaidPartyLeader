@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>ModeChip</Name>
+	<Placement>
+		<X>
+			<Pos>223</Pos>
+			<Size>228</Size>
+		</X>
+		<Y>
+			<Pos>12</Pos>
+			<Size>29</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/ChipFrame.Frame_11_11_11_11.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="ModeText.(WidgetTextView).xdb" />
+	</Children>
+	<TransparentInput>true</TransparentInput>
+</WidgetPanel>

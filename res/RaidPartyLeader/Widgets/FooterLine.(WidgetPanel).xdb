@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>FooterLine</Name>
+	<Placement>
+		<X>
+			<Pos>0</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>0</HighPos>
+		</X>
+		<Y>
+			<Pos>0</Pos>
+			<Size>1</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/Line.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+</WidgetPanel>

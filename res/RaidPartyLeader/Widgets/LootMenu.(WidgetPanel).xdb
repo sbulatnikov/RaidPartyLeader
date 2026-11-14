@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>LootMenu</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Size>216</Size>
+		</X>
+		<Y>
+			<Pos>214</Pos>
+			<Size>264</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/DialogFrame.Frame_13_13_13_13.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="MenuOpt1.(WidgetButton).xdb" />
+		<Item href="MenuOpt2.(WidgetButton).xdb" />
+		<Item href="MenuOpt3.(WidgetButton).xdb" />
+		<Item href="MenuOpt4.(WidgetButton).xdb" />
+		<Item href="MenuOpt5.(WidgetButton).xdb" />
+		<Item href="MenuOpt6.(WidgetButton).xdb" />
+		<Item href="MenuOpt7.(WidgetButton).xdb" />
+		<Item href="MenuOpt8.(WidgetButton).xdb" />
+	</Children>
+	<Priority>50</Priority>
+	<Visible>false</Visible>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>

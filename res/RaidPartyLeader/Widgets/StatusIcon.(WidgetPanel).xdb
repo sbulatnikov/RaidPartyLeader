@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>StatusIcon</Name>
+	<Placement>
+		<X>
+			<Size>14</Size>
+			<Align>WIDGET_ALIGN_HIGH</Align>
+			<HighPos>41</HighPos>
+		</X>
+		<Y>
+			<Pos>11</Pos>
+			<Size>14</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/StInvited.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+	<Visible>false</Visible>
+</WidgetPanel>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>PlaceAllIcon</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Size>14</Size>
+		</X>
+		<Y>
+			<Pos>12</Pos>
+			<Size>14</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/IconFlag.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+</WidgetPanel>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>ReadyIcon</Name>
+	<Placement>
+		<X>
+			<Pos>10</Pos>
+			<Size>19</Size>
+		</X>
+		<Y>
+			<Pos>10</Pos>
+			<Size>19</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/IconReady.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+</WidgetPanel>

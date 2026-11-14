@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>RowKindParty</Name>
+	<Placement>
+		<X>
+			<Pos>12</Pos>
+			<Size>77</Size>
+		</X>
+		<Y>
+			<Pos>16</Pos>
+			<Size>26</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/ChipParty.Frame_5_5_5_5.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="RowKindPartyText.(WidgetTextView).xdb" />
+	</Children>
+	<TransparentInput>true</TransparentInput>
+	<Visible>false</Visible>
+</WidgetPanel>

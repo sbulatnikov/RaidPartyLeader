@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>RPLWindow</Name>
+	<Placement>
+		<X>
+			<Pos>360</Pos>
+			<Size>1051</Size>
+		</X>
+		<Y>
+			<Pos>72</Pos>
+			<Size>641</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/WindowFrame.Frame_12_12_12_12.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="Header.(WidgetPanel).xdb" />
+		<Item href="HeaderLine.(WidgetPanel).xdb" />
+		<Item href="Tabs.(WidgetPanel).xdb" />
+		<Item href="CurrentView.(WidgetPanel).xdb" />
+		<Item href="EmptyView.(WidgetPanel).xdb" />
+		<Item href="SavedView.(WidgetPanel).xdb" />
+		<Item href="DetailView.(WidgetPanel).xdb" />
+		<Item href="Groups.(WidgetPanel).xdb" />
+		<Item href="LootBar.(WidgetPanel).xdb" />
+		<Item href="LootMenu.(WidgetPanel).xdb" />
+	</Children>
+	<Visible>false</Visible>
+</WidgetPanel>

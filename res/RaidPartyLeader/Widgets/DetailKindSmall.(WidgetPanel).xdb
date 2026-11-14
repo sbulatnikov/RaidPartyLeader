@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>DetailKindSmall</Name>
+	<Placement>
+		<X>
+			<Size>77</Size>
+			<Align>WIDGET_ALIGN_HIGH</Align>
+			<HighPos>17</HighPos>
+		</X>
+		<Y>
+			<Pos>29</Pos>
+			<Size>26</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/ChipSmall.Frame_5_5_5_5.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="DetailKindSmallText.(WidgetTextView).xdb" />
+	</Children>
+	<TransparentInput>true</TransparentInput>
+	<Visible>false</Visible>
+</WidgetPanel>

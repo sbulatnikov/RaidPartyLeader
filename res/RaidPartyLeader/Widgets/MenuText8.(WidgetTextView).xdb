@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>MenuText8</Name>
+	<Placement>
+		<X>
+			<Pos>34</Pos>
+			<Size>163</Size>
+		</X>
+		<Y>
+			<Pos>0</Pos>
+			<Size>31</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/MenuText8.txt" />
+</WidgetTextView>

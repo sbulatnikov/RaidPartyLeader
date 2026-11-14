@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>RPLRing</Name>
+	<Placement>
+		<X>
+			<Pos>0</Pos>
+			<Size>69</Size>
+		</X>
+		<Y>
+			<Pos>2</Pos>
+			<Size>38</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/RplRing.Frame_19_19_19_19.(WidgetLayerTiledTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+	<Visible>false</Visible>
+</WidgetPanel>

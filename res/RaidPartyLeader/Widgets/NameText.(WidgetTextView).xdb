@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>NameText</Name>
+	<Placement>
+		<X>
+			<Pos>70</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>38</HighPos>
+		</X>
+		<Y>
+			<Pos>0</Pos>
+			<Size>36</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/NameText.txt" />
+</WidgetTextView>

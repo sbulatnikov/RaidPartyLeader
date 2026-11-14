@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>TitleText</Name>
+	<Placement>
+		<X>
+			<Pos>37</Pos>
+			<Size>192</Size>
+		</X>
+		<Y>
+			<Pos>0</Pos>
+			<Size>52</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/TitleText.txt" />
+</WidgetTextView>

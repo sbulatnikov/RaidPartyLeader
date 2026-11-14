@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>LootBadge</Name>
+	<Placement>
+		<X>
+			<Pos>23</Pos>
+			<Size>17</Size>
+		</X>
+		<Y>
+			<Pos>18</Pos>
+			<Size>17</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/BadgeLoot.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+	<Visible>false</Visible>
+</WidgetPanel>

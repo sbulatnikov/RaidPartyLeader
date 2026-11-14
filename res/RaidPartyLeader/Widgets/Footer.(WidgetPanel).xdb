@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>Footer</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>17</HighPos>
+		</X>
+		<Y>
+			<Pos>475</Pos>
+			<Size>53</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="FooterLine.(WidgetPanel).xdb" />
+		<Item href="InviteNameEditBox.(WidgetPanel).xdb" />
+		<Item href="InviteButton.(WidgetButton).xdb" />
+	</Children>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>

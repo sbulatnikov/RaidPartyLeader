@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>InviteNote</Name>
+	<Placement>
+		<X>
+			<Pos>269</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>17</HighPos>
+		</X>
+		<Y>
+			<Pos>425</Pos>
+			<Size>38</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/InviteNote.txt" />
+	<TextStyle>
+		<multiline>true</multiline>
+		<wrapText>true</wrapText>
+	</TextStyle>
+</WidgetTextView>

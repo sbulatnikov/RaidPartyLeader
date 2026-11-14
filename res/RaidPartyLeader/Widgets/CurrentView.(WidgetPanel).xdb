@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>CurrentView</Name>
+	<Placement>
+		<X>
+			<Pos>0</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>0</HighPos>
+		</X>
+		<Y>
+			<Pos>98</Pos>
+			<Size>542</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="LinkBar.(WidgetPanel).xdb" />
+		<Item href="InfoText.(WidgetTextView).xdb" />
+		<Item href="ActionsBar.(WidgetPanel).xdb" />
+		<Item href="Footer.(WidgetPanel).xdb" />
+	</Children>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>

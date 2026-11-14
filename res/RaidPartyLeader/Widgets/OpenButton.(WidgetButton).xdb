@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetButton>
+	<Name>OpenButton</Name>
+	<Placement>
+		<X>
+			<Pos>370</Pos>
+			<Size>108</Size>
+		</X>
+		<Y>
+			<Pos>11</Pos>
+			<Size>36</Size>
+		</Y>
+	</Placement>
+	<IgnoreDblClick>true</IgnoreDblClick>
+	<TextTag>button_label</TextTag>
+	<Variants>
+		<Item>
+			<TextFileRef href="../Texts/OpenButton.txt" />
+			<LayerHighlight href="Textures/BtnSecondaryHover.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/BtnSecondaryNormal.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/OpenButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/BtnSecondaryPressed.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/BtnSecondaryDisabled.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/OpenButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_open</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+	</Variants>
+	<TextStyle>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+</WidgetButton>

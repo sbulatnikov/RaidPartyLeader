@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetButton>
+	<Name>MenuOpt6</Name>
+	<Placement>
+		<X>
+			<Pos>7</Pos>
+			<Size>202</Size>
+		</X>
+		<Y>
+			<Pos>163</Pos>
+			<Size>31</Size>
+		</Y>
+	</Placement>
+	<IgnoreDblClick>true</IgnoreDblClick>
+	<TextTag>button_label</TextTag>
+	<Variants>
+		<Item>
+			<TextFileRef href="../Texts/MenuOpt6.txt" />
+			<LayerHighlight href="Textures/GhostHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/Transparent.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/MenuOpt6.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/GhostHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/Transparent.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/MenuOpt6.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_menu_pick</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+	</Variants>
+	<TextStyle>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+	<Children>
+		<Item href="MenuDot6.(WidgetPanel).xdb" />
+		<Item href="MenuText6.(WidgetTextView).xdb" />
+	</Children>
+</WidgetButton>

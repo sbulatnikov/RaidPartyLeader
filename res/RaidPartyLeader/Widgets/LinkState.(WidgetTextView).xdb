@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>LinkState</Name>
+	<Placement>
+		<X>
+			<Pos>43</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>330</HighPos>
+		</X>
+		<Y>
+			<Pos>29</Pos>
+			<Size>19</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/LinkState.txt" />
+</WidgetTextView>

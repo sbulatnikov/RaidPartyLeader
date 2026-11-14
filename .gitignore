@@ -1,0 +1,6 @@
+# Сборка и временное
+out/
+addon/
+__pycache__/
+*.pyc
+backup/

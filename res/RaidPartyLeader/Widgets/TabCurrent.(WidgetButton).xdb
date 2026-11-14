@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetButton>
+	<Name>TabCurrent</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Size>108</Size>
+		</X>
+		<Y>
+			<Pos>5</Pos>
+			<Size>38</Size>
+		</Y>
+	</Placement>
+	<IgnoreDblClick>true</IgnoreDblClick>
+	<TextTag>button_label</TextTag>
+	<Variants>
+		<Item>
+			<TextFileRef href="../Texts/TabCurrent.txt" />
+			<LayerHighlight href="Textures/GhostHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/Transparent.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/TabCurrent.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/GhostHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/Transparent.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/TabCurrent.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_tab_current</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+	</Variants>
+	<TextStyle>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+	<Children>
+		<Item href="TabCurrentLine.(WidgetPanel).xdb" />
+	</Children>
+</WidgetButton>

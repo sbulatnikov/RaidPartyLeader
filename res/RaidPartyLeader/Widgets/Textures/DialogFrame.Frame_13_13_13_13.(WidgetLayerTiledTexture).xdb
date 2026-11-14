@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetLayerTiledTexture>
+	<Color>0xffffffff</Color>
+	<Grayed>false</Grayed>
+	<BlendEffect>BLEND_EFFECT_ALPHABLND</BlendEffect>
+	<flatPlacement>false</flatPlacement>
+	<textureItem href="DialogFrame.Studio.(UISingleTexture).xdb" />
+	<Layout>
+		<LeftX>13</LeftX>
+		<MiddleX>102</MiddleX>
+		<RightX>13</RightX>
+		<TopY>13</TopY>
+		<MiddleY>102</MiddleY>
+		<BottomY>13</BottomY>
+	</Layout>
+</WidgetLayerTiledTexture>

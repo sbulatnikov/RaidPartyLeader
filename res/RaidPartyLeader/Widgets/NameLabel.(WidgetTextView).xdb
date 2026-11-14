@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>NameLabel</Name>
+	<Placement>
+		<X>
+			<Pos>22</Pos>
+			<Size>413</Size>
+		</X>
+		<Y>
+			<Pos>53</Pos>
+			<Size>19</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/NameLabel.txt" />
+</WidgetTextView>

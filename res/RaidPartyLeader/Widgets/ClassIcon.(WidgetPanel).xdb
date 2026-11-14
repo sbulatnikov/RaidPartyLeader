@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>ClassIcon</Name>
+	<Placement>
+		<X>
+			<Pos>2</Pos>
+			<Size>31</Size>
+		</X>
+		<Y>
+			<Pos>2</Pos>
+			<Size>31</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/ClassWarrior.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+</WidgetPanel>

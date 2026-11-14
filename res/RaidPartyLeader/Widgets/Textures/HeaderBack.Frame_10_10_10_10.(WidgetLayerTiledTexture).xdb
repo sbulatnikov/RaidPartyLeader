@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetLayerTiledTexture>
+	<Color>0xffffffff</Color>
+	<Grayed>false</Grayed>
+	<BlendEffect>BLEND_EFFECT_ALPHABLND</BlendEffect>
+	<flatPlacement>false</flatPlacement>
+	<textureItem href="HeaderBack.Studio.(UISingleTexture).xdb" />
+	<Layout>
+		<LeftX>10</LeftX>
+		<MiddleX>108</MiddleX>
+		<RightX>10</RightX>
+		<TopY>10</TopY>
+		<MiddleY>44</MiddleY>
+		<BottomY>10</BottomY>
+	</Layout>
+</WidgetLayerTiledTexture>

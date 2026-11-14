@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>Slot3</Name>
+	<Placement>
+		<X>
+			<Pos>7</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>7</HighPos>
+		</X>
+		<Y>
+			<Pos>122</Pos>
+			<Size>36</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="SlotButton.(WidgetButton).xdb" />
+		<Item href="ClassIcon.(WidgetPanel).xdb" />
+		<Item href="LeaderBadge.(WidgetPanel).xdb" />
+		<Item href="AssistBadge.(WidgetPanel).xdb" />
+		<Item href="LootBadge.(WidgetPanel).xdb" />
+		<Item href="FactionBadge.(WidgetPanel).xdb" />
+		<Item href="AspectIcon.(WidgetPanel).xdb" />
+		<Item href="NameText.(WidgetTextView).xdb" />
+		<Item href="StatusIcon.(WidgetPanel).xdb" />
+		<Item href="SwapButton.(WidgetButton).xdb" />
+		<Item href="HomeButton.(WidgetButton).xdb" />
+		<Item href="RetryButton.(WidgetButton).xdb" />
+		<Item href="KickButton.(WidgetButton).xdb" />
+	</Children>
+</WidgetPanel>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetButton>
+	<Name>SaveAsNewButton</Name>
+	<Placement>
+		<X>
+			<Size>192</Size>
+			<Align>WIDGET_ALIGN_HIGH</Align>
+			<HighPos>8</HighPos>
+		</X>
+		<Y>
+			<Pos>10</Pos>
+			<Size>36</Size>
+		</Y>
+	</Placement>
+	<IgnoreDblClick>true</IgnoreDblClick>
+	<TextTag>button_label</TextTag>
+	<Variants>
+		<Item>
+			<TextFileRef href="../Texts/SaveAsNewButton.txt" />
+			<LayerHighlight href="Textures/BtnSecondaryHover.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/BtnSecondaryNormal.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SaveAsNewButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/BtnSecondaryPressed.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/BtnSecondaryDisabled.Frame_7_7_7_7.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SaveAsNewButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_save_copy</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+	</Variants>
+	<TextStyle>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+	<Visible>false</Visible>
+</WidgetButton>

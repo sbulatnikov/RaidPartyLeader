@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetScrollableContainer>
+	<Name>SavedList</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Size>530</Size>
+		</X>
+		<Y>
+			<Pos>12</Pos>
+			<Size>518</Size>
+		</Y>
+	</Placement>
+	<widgetsArrangement>WIDGETS_ARRANGEMENT_T2B</widgetsArrangement>
+	<elementsInterval>6</elementsInterval>
+</WidgetScrollableContainer>

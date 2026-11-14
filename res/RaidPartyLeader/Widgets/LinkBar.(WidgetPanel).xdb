@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>LinkBar</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>17</HighPos>
+		</X>
+		<Y>
+			<Pos>14</Pos>
+			<Size>55</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/PanelFrame.Frame_8_8_8_8.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="LinkIcon.(WidgetPanel).xdb" />
+		<Item href="LinkTitle.(WidgetTextView).xdb" />
+		<Item href="LinkState.(WidgetTextView).xdb" />
+		<Item href="LinkPickButton.(WidgetButton).xdb" />
+		<Item href="UpdateButton.(WidgetButton).xdb" />
+		<Item href="SaveAsNewButton.(WidgetButton).xdb" />
+		<Item href="SaveButton.(WidgetButton).xdb" />
+	</Children>
+</WidgetPanel>

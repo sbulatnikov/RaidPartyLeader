@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>LeaderBadge</Name>
+	<Placement>
+		<X>
+			<Pos>23</Pos>
+			<Size>17</Size>
+		</X>
+		<Y>
+			<Pos>-4</Pos>
+			<Size>17</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/BadgeLeader.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+</WidgetPanel>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>Group4</Name>
+	<Placement>
+		<X>
+			<Pos>770</Pos>
+			<Size>247</Size>
+		</X>
+		<Y>
+			<Pos>0</Pos>
+			<Size>288</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/GroupFrame.Frame_8_8_8_8.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="GroupHeader.(WidgetButton).xdb" />
+		<Item href="Slot1.(WidgetPanel).xdb" />
+		<Item href="Slot2.(WidgetPanel).xdb" />
+		<Item href="Slot3.(WidgetPanel).xdb" />
+		<Item href="Slot4.(WidgetPanel).xdb" />
+		<Item href="Slot5.(WidgetPanel).xdb" />
+		<Item href="Slot6.(WidgetPanel).xdb" />
+	</Children>
+</WidgetPanel>

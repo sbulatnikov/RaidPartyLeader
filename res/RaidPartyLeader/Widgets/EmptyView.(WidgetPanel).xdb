@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>EmptyView</Name>
+	<Placement>
+		<X>
+			<Pos>0</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>0</HighPos>
+		</X>
+		<Y>
+			<Pos>98</Pos>
+			<Size>542</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="EmptyTitle.(WidgetTextView).xdb" />
+		<Item href="EmptyText.(WidgetTextView).xdb" />
+		<Item href="OpenSavedButton.(WidgetButton).xdb" />
+	</Children>
+	<Visible>false</Visible>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>

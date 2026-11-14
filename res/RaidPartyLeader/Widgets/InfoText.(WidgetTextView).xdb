@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>InfoText</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Size>480</Size>
+		</X>
+		<Y>
+			<Pos>82</Pos>
+			<Size>24</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/InfoText.txt" />
+</WidgetTextView>

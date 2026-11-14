@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>LootBar</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>17</HighPos>
+		</X>
+		<Y>
+			<Pos>175</Pos>
+			<Size>36</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="LootSchemeLabel.(WidgetTextView).xdb" />
+		<Item href="LootSchemeButton.(WidgetButton).xdb" />
+		<Item href="LootQualityLabel.(WidgetTextView).xdb" />
+		<Item href="LootQualityButton.(WidgetButton).xdb" />
+	</Children>
+	<Visible>false</Visible>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>

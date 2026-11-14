@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<UIRelatedTextures>
+	<Items>
+		<Item>
+			<name>BARD</name>
+			<textureItem href="ClassBard.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>DRUID</name>
+			<textureItem href="ClassDruid.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>ENGINEER</name>
+			<textureItem href="ClassEngineer.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>MAGE</name>
+			<textureItem href="ClassMage.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>NECROMANCER</name>
+			<textureItem href="ClassNecromancer.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>PALADIN</name>
+			<textureItem href="ClassPaladin.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>PRIEST</name>
+			<textureItem href="ClassPriest.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>PSIONIC</name>
+			<textureItem href="ClassPsionic.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>STALKER</name>
+			<textureItem href="ClassStalker.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>WARLOCK</name>
+			<textureItem href="ClassWarlock.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>WARRIOR</name>
+			<textureItem href="ClassWarrior.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>UNKNOWN</name>
+			<textureItem href="ClassUnknown.(UITextureElement).xdb" />
+		</Item>
+	</Items>
+</UIRelatedTextures>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>SavedRow</Name>
+	<Placement>
+		<X>
+			<Pos>0</Pos>
+			<Size>530</Size>
+		</X>
+		<Y>
+			<Pos>0</Pos>
+			<Size>58</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/PanelFrame.Frame_8_8_8_8.(WidgetLayerTiledTexture).xdb" />
+	<Children>
+		<Item href="RowKindParty.(WidgetPanel).xdb" />
+		<Item href="RowKindRaid.(WidgetPanel).xdb" />
+		<Item href="RowKindSmall.(WidgetPanel).xdb" />
+		<Item href="RowName.(WidgetTextView).xdb" />
+		<Item href="RowMeta.(WidgetTextView).xdb" />
+		<Item href="RenameButton.(WidgetButton).xdb" />
+		<Item href="OpenButton.(WidgetButton).xdb" />
+		<Item href="DeleteButton.(WidgetButton).xdb" />
+	</Children>
+	<Visible>false</Visible>
+</WidgetPanel>

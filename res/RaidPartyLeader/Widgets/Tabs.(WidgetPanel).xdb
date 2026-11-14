@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>Tabs</Name>
+	<Placement>
+		<X>
+			<Pos>0</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>0</HighPos>
+		</X>
+		<Y>
+			<Pos>54</Pos>
+			<Size>44</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="TabCurrent.(WidgetButton).xdb" />
+		<Item href="TabSaved.(WidgetButton).xdb" />
+		<Item href="TabsLine.(WidgetPanel).xdb" />
+	</Children>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>

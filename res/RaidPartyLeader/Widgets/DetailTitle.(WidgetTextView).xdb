@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetTextView>
+	<Name>DetailTitle</Name>
+	<Placement>
+		<X>
+			<Pos>62</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>108</HighPos>
+		</X>
+		<Y>
+			<Pos>14</Pos>
+			<Size>29</Size>
+		</Y>
+	</Placement>
+	<TransparentInput>true</TransparentInput>
+	<FormatFileRef href="../Texts/DetailTitle.txt" />
+</WidgetTextView>

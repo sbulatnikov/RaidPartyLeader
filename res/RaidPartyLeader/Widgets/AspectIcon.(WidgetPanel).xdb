@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>AspectIcon</Name>
+	<Placement>
+		<X>
+			<Pos>41</Pos>
+			<Size>22</Size>
+		</X>
+		<Y>
+			<Pos>7</Pos>
+			<Size>22</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/AspectDamage.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+</WidgetPanel>

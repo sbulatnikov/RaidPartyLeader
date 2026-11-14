@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>RPLBadge</Name>
+	<Placement>
+		<X>
+			<Pos>51</Pos>
+			<Size>10</Size>
+		</X>
+		<Y>
+			<Pos>16</Pos>
+			<Size>10</Size>
+		</Y>
+	</Placement>
+	<BackLayer href="Textures/DotWarn.Stretch.(WidgetLayerSimpleTexture).xdb" />
+	<TransparentInput>true</TransparentInput>
+	<Visible>false</Visible>
+</WidgetPanel>

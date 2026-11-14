@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>DetailView</Name>
+	<Placement>
+		<X>
+			<Pos>0</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>0</HighPos>
+		</X>
+		<Y>
+			<Pos>98</Pos>
+			<Size>542</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="BackButton.(WidgetButton).xdb" />
+		<Item href="DetailTitle.(WidgetTextView).xdb" />
+		<Item href="DetailMeta.(WidgetTextView).xdb" />
+		<Item href="DetailKindParty.(WidgetPanel).xdb" />
+		<Item href="DetailKindRaid.(WidgetPanel).xdb" />
+		<Item href="DetailKindSmall.(WidgetPanel).xdb" />
+		<Item href="StartInviteButton.(WidgetButton).xdb" />
+		<Item href="InviteNote.(WidgetTextView).xdb" />
+	</Children>
+	<Visible>false</Visible>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>

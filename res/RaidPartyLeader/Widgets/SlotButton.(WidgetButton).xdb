@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetButton>
+	<Name>SlotButton</Name>
+	<Placement>
+		<X>
+			<Pos>0</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>0</HighPos>
+		</X>
+		<Y>
+			<Pos>0</Pos>
+			<Size>36</Size>
+		</Y>
+	</Placement>
+	<IgnoreDblClick>true</IgnoreDblClick>
+	<TextTag>button_label</TextTag>
+	<Variants>
+		<Item>
+			<TextFileRef href="../Texts/SlotButton.txt" />
+			<LayerHighlight href="Textures/SlotHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/SlotNormal.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/SlotHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/SlotNormal.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_slot</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+		<Item>
+			<TextFileRef href="../Texts/SlotButton.txt" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/SlotSelected.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/SlotSelected.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/SlotSelected.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_slot</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+		<Item>
+			<TextFileRef href="../Texts/SlotButton.txt" />
+			<LayerHighlight href="Textures/SlotHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/SlotMisplaced.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/SlotMisplaced.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/SlotMisplaced.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_slot</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+		<Item>
+			<TextFileRef href="../Texts/SlotButton.txt" />
+			<LayerHighlight href="Textures/SlotHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/SlotEmpty.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/SlotEmpty.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/SlotEmpty.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_slot</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+		<Item>
+			<TextFileRef href="../Texts/SlotButton.txt" />
+			<LayerHighlight href="Textures/SlotHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/SlotTarget.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/SlotTarget.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/SlotTarget.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+				<FormatFileRef href="../Texts/SlotButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_slot</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+	</Variants>
+	<TextStyle>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+</WidgetButton>

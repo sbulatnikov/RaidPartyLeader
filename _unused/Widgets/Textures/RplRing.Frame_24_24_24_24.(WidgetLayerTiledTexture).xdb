@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetLayerTiledTexture>
+	<Color>0xffffffff</Color>
+	<Grayed>false</Grayed>
+	<BlendEffect>BLEND_EFFECT_ALPHABLND</BlendEffect>
+	<flatPlacement>false</flatPlacement>
+	<textureItem href="RplRing.Studio.(UISingleTexture).xdb" />
+	<Layout>
+		<LeftX>24</LeftX>
+		<MiddleX>16</MiddleX>
+		<RightX>24</RightX>
+		<TopY>24</TopY>
+		<MiddleY>16</MiddleY>
+		<BottomY>24</BottomY>
+	</Layout>
+</WidgetLayerTiledTexture>

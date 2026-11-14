@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetLayerTiledTexture>
+	<Color>0xffffffff</Color>
+	<Grayed>false</Grayed>
+	<BlendEffect>BLEND_EFFECT_ALPHABLND</BlendEffect>
+	<flatPlacement>false</flatPlacement>
+	<textureItem href="PanelFrameWarn.Studio.(UISingleTexture).xdb" />
+	<Layout>
+		<LeftX>8</LeftX>
+		<MiddleX>48</MiddleX>
+		<RightX>8</RightX>
+		<TopY>8</TopY>
+		<MiddleY>48</MiddleY>
+		<BottomY>8</BottomY>
+	</Layout>
+</WidgetLayerTiledTexture>

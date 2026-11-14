@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetPanel>
+	<Name>Groups</Name>
+	<Placement>
+		<X>
+			<Pos>17</Pos>
+			<Align>WIDGET_ALIGN_BOTH</Align>
+			<HighPos>17</HighPos>
+		</X>
+		<Y>
+			<Pos>226</Pos>
+			<Size>288</Size>
+		</Y>
+	</Placement>
+	<Children>
+		<Item href="Group1.(WidgetPanel).xdb" />
+		<Item href="Group2.(WidgetPanel).xdb" />
+		<Item href="Group3.(WidgetPanel).xdb" />
+		<Item href="Group4.(WidgetPanel).xdb" />
+	</Children>
+	<PickChildrenOnly>true</PickChildrenOnly>
+</WidgetPanel>
