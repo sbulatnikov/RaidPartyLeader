@@ -200,5 +200,17 @@ INVITES = {}
 rmb( true ) second()
 check( #INVITES == 2 and INVITES[ 1 ].into == "group", "снимок группы: вне группы позваны все" )
 
+-- 13. Собирали отряд вне группы, а первый по местам сам позвал нас к себе и превратил
+-- группу в отряд: мы не лидер — остальных сами не зовём
+LEAVE() second( 3 )
+Store.SetQuickRef( 1 )
+INVITES = {}
+rmb( true ) second()
+check( #INVITES == 1, "сбор отряда вне группы: позван первый" )
+SET( "party", { { "Вельмира", ME } }, "Вельмира" ) second()
+INVITES = {}
+SET( "raid", { { "Вельмира", ME } }, "Вельмира" ) second( 3 )
+check( #INVITES == 0, "в чужом отряде без прав остальных не зовём" )
+
 print( fails == 0 and "ВСЁ ОК" or ( "ИТОГ: ошибок " .. fails ) )
 os.exit( fails == 0 and 0 or 1 )

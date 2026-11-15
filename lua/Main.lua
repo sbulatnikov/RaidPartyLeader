@@ -213,7 +213,9 @@ function RPL.Refresh()
 	local asm = RPL.asm
 	if asm and asm.active and asm.inviteRestAt and RPL.tick >= asm.inviteRestAt then
 		asm.inviteRestAt = nil
-		InviteMissing( f )
+		-- Ожидаем: отряд не наш (первый по местам сам позвал нас к себе) и приглашать
+		-- нам нельзя — остальных не зовём
+		if st.canInvite then InviteMissing( f ) end
 	end
 	prevKind = st.kind
 	V.Render()
