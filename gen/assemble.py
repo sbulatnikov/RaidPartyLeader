@@ -1,9 +1,9 @@
 """Собирает папку аддона RaidPartyLeader: ресурсы из res/, скрипты из lua/ в Windows-1251.
 
-  python gen/assemble.py [папка аддона]     — по умолчанию out/RaidPartyLeader
+  python3 gen/assemble.py [папка аддона]     по умолчанию out/RaidPartyLeader
 
 Ресурсы (виджеты, тексты, текстуры, AddonDesc) лежат готовыми в res/RaidPartyLeader —
-генератора ресурсов у RPL нет. В AddonDesc подставляется версия из lua/Util.lua (RPL.VERSION),
+их пересобирает gen/res/make.py, для сборки аддона он не нужен. В AddonDesc подставляется версия из lua/Util.lua (RPL.VERSION),
 в Texts/AddonName.txt — имя с версией. Отладка вырезается (tools/strip_debug.py),
 если сборка не отладочная (ALLODS_DEBUG=1).
 """
@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 NAME = 'RaidPartyLeader'
 OUT = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else os.path.join(ROOT, 'out', NAME)
-sys.path.insert(0, os.path.join(ROOT, '..', '..', 'tools'))
+sys.path.insert(0, os.path.join(ROOT, 'tools'))  # своя копия: репозиторий собирается сам по себе
 import strip_debug  # noqa: E402
 
 SCRIPTS = ['LibDnD', 'Util', 'Storage', 'Game', 'View', 'Main']

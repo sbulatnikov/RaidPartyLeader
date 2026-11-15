@@ -1,11 +1,10 @@
 import os, sys, io, zlib, struct
-sys.path.insert(0, os.environ.get('RPL_GEN') or os.path.expanduser('~/rplgen'))
+sys.path.insert(0, os.environ['RPL_GEN'])  # RPL_GEN, RPL_ROOT, RPL_ASSETS задаёт make.py
 from PIL import Image, ImageDraw
 from tex import *
 
-ROOT = os.environ.get('RPL_ROOT') or os.path.expanduser('~/mnt/Mods/Addons/RaidPartyLeader')
-ASSETS = os.environ.get('RPL_ASSETS') or os.path.expanduser('~/mnt/AddonUIBuilder/assets/Interface')
-assert os.environ.get('RPL_ROOT') or not os.path.exists(os.path.join(ROOT, 'AddonDesc.(UIAddon).xdb')), 'already exists'
+ROOT = os.environ['RPL_ROOT']
+ASSETS = os.environ['RPL_ASSETS']
 for d in ('Widgets', 'Texts', 'Scripts'): os.makedirs(os.path.join(ROOT, d), exist_ok=True)
 T = Tex(ROOT)
 

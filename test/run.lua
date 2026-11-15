@@ -1,5 +1,5 @@
 -- Прогон логики RaidPartyLeader на заглушках:
---   texlua test/run.lua <папка проекта> <папка скриптов>
+--   texlua test/run.lua <папка проекта> <папка скриптов>      (запускает test/run.sh)
 -- Скрипты — lua/, пропущенные через tools/strip_debug.py (обычная или отладочная сборка).
 local ROOT = arg and arg[ 1 ] or "."
 local L = ( arg and arg[ 2 ] or ( ROOT .. "/lua" ) ) .. "/"
