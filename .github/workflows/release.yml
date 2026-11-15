@@ -1,0 +1,53 @@
+# Выпуск на GitHub по тегу версии: проверки и сборка (ci.yml), затем выпуск с RaidPartyLeader.pak.
+# Запуск вручную с тегом — проба: если выпуск с таким тегом уже есть, ничего не публикуется.
+name: Release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Тег версии, например v0.11.0
+        required: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: RaidPartyLeader-pak
+          path: out
+      - name: Версия в теге и в lua/Util.lua совпадают
+        run: |
+          VER=$(sed -n 's/^RPL.VERSION = "\(.*\)".*/\1/p' lua/Util.lua)
+          echo "тег $TAG, версия аддона $VER"
+          test "$TAG" = "v$VER"
+          echo "VER=$VER" >> "$GITHUB_ENV"
+      - name: Описание выпуска из release/changes.md
+        run: |
+          awk -v head="Изменения $VER:" '$0 == head { on = 1; next } on && /^- / { print; next } on && NF { on = 0 }' release/changes.md > notes.md
+          test -s notes.md || { echo "в release/changes.md нет раздела «Изменения $VER:»"; exit 1; }
+          printf '\nУстановка: положите `RaidPartyLeader.pak` в `<папка игры>\\data\\Mods\\Addons\\`.\n' >> notes.md
+          cat notes.md
+      - name: Выпуск
+        run: |
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Выпуск $TAG уже есть — ничего не публикуем."
+            exit 0
+          fi
+          # До версии 1.0 — бета: предварительный выпуск
+          case "$VER" in
+            0.*) gh release create "$TAG" out/RaidPartyLeader.pak --verify-tag --prerelease --title "RaidPartyLeader $VER (бета)" --notes-file notes.md ;;
+            *)   gh release create "$TAG" out/RaidPartyLeader.pak --verify-tag --title "RaidPartyLeader $VER" --notes-file notes.md ;;
+          esac
