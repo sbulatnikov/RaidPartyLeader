@@ -498,7 +498,10 @@ local function RenderCurrent()
 	local inviteAll = RPL.W( "InviteAllButton" )
 	local showInviteAll = f ~= nil and #m.pending > 0
 	RPL.Show( inviteAll, showInviteAll )
-	RPL.SetLabel( inviteAll, RPL.F( RPL.L.inviteAll, m.invitable ) )
+	-- отряд вне группы собирается с одного приглашения
+	local willInvite = m.invitable
+	if st.kind == "none" and f and RPL.IsRaidKind( f.kind ) then willInvite = math.min( 1, willInvite ) end
+	RPL.SetLabel( inviteAll, RPL.F( RPL.L.inviteAll, willInvite ) )
 	RPL.Enable( inviteAll, m.invitable > 0 and st.canInvite and not RPL.KindBlocked( st.kind, f and f.kind ) )
 	local placeAll = RPL.W( "PlaceAllButton" )
 	-- «Расставить» встаёт к левому краю, когда «Пригласить всех» скрыта
