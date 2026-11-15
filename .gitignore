@@ -4,3 +4,7 @@ addon/
 __pycache__/
 *.pyc
 backup/
+
+# Файлы прежних версий и проверка разметки в Allods Studio — только у автора
+/_unused/
+/gen/res/st/
