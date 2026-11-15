@@ -20,6 +20,7 @@
 		<Item href="EmptyView.(WidgetPanel).xdb" />
 		<Item href="SavedView.(WidgetPanel).xdb" />
 		<Item href="DetailView.(WidgetPanel).xdb" />
+		<Item href="QuickEmptyView.(WidgetPanel).xdb" />
 		<Item href="Groups.(WidgetPanel).xdb" />
 		<Item href="LootBar.(WidgetPanel).xdb" />
 		<Item href="LootMenu.(WidgetPanel).xdb" />

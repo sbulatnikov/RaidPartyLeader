@@ -8,12 +8,19 @@
 --   members = { { n = "Ник", g = 1, s = 1 }, ... },   -- g: группа 1..4, s: место 1..6
 --   leader = "Ник", assist = { "Ник", ... }, loot = "Ник" | nil,
 -- }
+--
+-- «Быстрое» — одна запись: data.quick = { ref = id } (ссылка на сохранённое) или
+-- { snap = запись, at = "15.11 21:40" } (снимок по ПКМ). Снимок адресуется ключом
+-- Store.QUICK вместо id: Store.Get( Store.QUICK ) отдаёт его как обычное формирование.
+-- Связь «Текущего» (data.link) — id сохранённого или Store.QUICK.
 --------------------------------------------------------------------------------
 RPL.Store = {}
 local Store = RPL.Store
 
 local SECTION = "RaidPartyLeader"
 local data = nil
+
+Store.QUICK = "quick"
 
 local function Save()
 	if data then userMods.SetAvatarConfigSection( SECTION, data ) end
@@ -26,7 +33,7 @@ function Store.Load()
 	data.version = data.version or 1
 	data.nextId = data.nextId or 1
 	data.list = data.list or {}
-	if data.autoRetry == nil then data.autoRetry = true end
+	data.autoRetry = nil -- автоповтора больше нет (до 0.9.8)
 	data.classes = data.classes or {}
 end
 
@@ -65,6 +72,7 @@ end
 
 function Store.Get( id )
 	if not id or not data then return nil end
+	if id == Store.QUICK then return data.quick and data.quick.snap or nil end
 	for _, f in ipairs( data.list ) do
 		if f.id == id then return f end
 	end
@@ -127,6 +135,8 @@ function Store.Delete( id )
 	for i, f in ipairs( data.list ) do
 		if f.id == id then
 			table.remove( data.list, i )
+			-- «Быстрое» ссылалось на него — теперь пусто
+			if data.quick and data.quick.ref == id then data.quick = nil end
 			Save()
 			return f
 		end
@@ -144,64 +154,44 @@ function Store.SetLink( id )
 	Save()
 end
 
--- Сохранённое формирование с тем же типом и тем же составом (по никам), новые — первыми
-function Store.FindMatch( kind, names )
-	local want = {}
-	local n = 0
-	for _, name in ipairs( names ) do want[ name ] = true n = n + 1 end
-	for i = #data.list, 1, -1 do
-		local f = data.list[ i ]
-		if f.kind == kind and #( f.members or {} ) == n then
-			local same = true
-			for _, m in ipairs( f.members ) do
-				if not want[ m.n ] then same = false break end
-			end
-			if same then return f.id end
-		end
-	end
-end
-
--- Похожее сохранённое, когда точного совпадения нет: например, вышел из отряда и
--- вернулся, а там уже кого-то не хватает или есть новенький.
--- Считаем только других игроков (не себя). Подходит формирование того же рода
--- (группа / отряд), где сейчас есть хотя бы 2 его участника, и это не меньше
--- половины его участников и не меньше половины текущего состава.
--- Лучшее — где совпадает больше игроков; при равенстве — тот же тип, затем новее.
-function Store.FindBest( kind, names, me )
-	local here = {}
-	local nowOthers = 0
-	for _, name in ipairs( names ) do
-		if name ~= me then here[ name ] = true nowOthers = nowOthers + 1 end
-	end
-	local best, bestScore = nil, nil
-	for i = #data.list, 1, -1 do
-		local f = data.list[ i ]
-		if RPL.IsRaidKind( f.kind ) == RPL.IsRaidKind( kind ) then
-			local present, others = 0, 0
-			for _, m in ipairs( f.members or {} ) do
-				if m.n ~= me then
-					others = others + 1
-					if here[ m.n ] then present = present + 1 end
-				end
-			end
-			if present >= 2 and present * 2 >= others and present * 2 >= nowOthers then
-				local score = present * 2 + ( f.kind == kind and 1 or 0 )
-				if not bestScore or score > bestScore then best, bestScore = f.id, score end
-			end
-		end
-	end
-	return best
-end
-
 function Store.NextId()
 	return data and data.nextId or 1
 end
 
-function Store.GetAutoRetry()
-	return data and data.autoRetry and true or false
+--------------------------------------------------------------------------------
+-- «Быстрое»
+--------------------------------------------------------------------------------
+-- Ключ формирования из «Быстрого» (id сохранённого или Store.QUICK) или nil, если пусто.
+-- Ссылка на удалённое сохранённое считается пустой.
+function Store.QuickKey()
+	local q = data and data.quick
+	if not q then return nil end
+	if q.snap then return Store.QUICK end
+	if q.ref and Store.Get( q.ref ) then return q.ref end
+	return nil
 end
 
-function Store.SetAutoRetry( v )
-	data.autoRetry = v and true or false
+function Store.QuickIsSnap()
+	return data and data.quick and data.quick.snap ~= nil or false
+end
+
+function Store.QuickAt()
+	return data and data.quick and data.quick.at or ""
+end
+
+function Store.SetQuickRef( id )
+	data.quick = { ref = id }
+	Save()
+end
+
+function Store.SetQuickSnap( rec, name )
+	rec.id = Store.QUICK
+	rec.name = name
+	data.quick = { snap = rec, at = RPL.Stamp() }
+	Save()
+end
+
+function Store.ClearQuick()
+	data.quick = nil
 	Save()
 end

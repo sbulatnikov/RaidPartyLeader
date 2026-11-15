@@ -1,4 +1,4 @@
 # Файлы хранятся байт в байт: без преобразования концов строк и кодировок
 * -text
-# Промо-картинки — через Git LFS (git lfs install на компьютере, затем раскомментировать)
-# release/promo/** filter=lfs diff=lfs merge=lfs -text
+# Промо-картинки — через Git LFS (после клонирования: git lfs install)
+release/promo/** filter=lfs diff=lfs merge=lfs -text

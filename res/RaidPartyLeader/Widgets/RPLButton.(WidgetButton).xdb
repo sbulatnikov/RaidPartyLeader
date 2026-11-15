@@ -30,6 +30,7 @@
 				<FormatFileRef href="../Texts/RPLButton.Disabled.txt" />
 			</StateDisabled>
 			<Reaction>rpl_toggle</Reaction>
+			<ReactionRightClick>rpl_rmb</ReactionRightClick>
 			<ReactionOnUp>true</ReactionOnUp>
 		</Item>
 	</Variants>

@@ -15,6 +15,7 @@
 	<Children>
 		<Item href="TabCurrent.(WidgetButton).xdb" />
 		<Item href="TabSaved.(WidgetButton).xdb" />
+		<Item href="TabQuick.(WidgetButton).xdb" />
 		<Item href="TabsLine.(WidgetPanel).xdb" />
 	</Children>
 	<PickChildrenOnly>true</PickChildrenOnly>

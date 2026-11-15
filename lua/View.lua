@@ -69,25 +69,41 @@ function V.BuildCurrent( st )
 	local target = V.Target( f )
 	local ng = RPL.KindGroups( st.kind )
 	if f then ng = math.max( ng, RPL.KindGroups( f.kind ) ) end
-	local m = { st = st, f = f, target = target, ng = ng, groups = {}, misplaced = {}, misordered = {}, pending = {}, invitable = 0, badge = false }
+	local m = { st = st, f = f, target = target, ng = ng, groups = {}, misplaced = {}, misordered = {}, pending = {},
+		invitable = 0, overflow = {}, strangers = 0, badge = false }
 	for g = 1, ng do m.groups[ g ] = {} end
 	for _, e in ipairs( st.list ) do
 		local t = target[ e.name ]
 		e.misplaced = ( t and RPL.IsRaidKind( st.kind ) and t.g ~= e.g ) and true or false
 		if e.misplaced then table.insert( m.misplaced, e ) end
+		-- «не из состава»: в связанном формировании его нет. Аддон таких не трогает, только помечает
+		e.stranger = ( f ~= nil and st.kind ~= "none" and not t and e.name ~= st.me ) and true or false
+		if e.stranger then m.strangers = m.strangers + 1 end
 		if m.groups[ e.g ] then table.insert( m.groups[ e.g ], e ) end
 	end
-	-- Недостающих из сохранённого показываем, пока мы в этом формировании
-	-- (или собираем его): вышел, исключили, ещё не пригласили — видно пустую роль.
-	-- Вне группы связь сбрасывается, и «Текущее» — только реальный состав.
+	-- Недостающих из связанного формирования показываем, пока мы в нём (или собираем его):
+	-- вышел, исключили, ещё не пригласили — видно пустую роль.
 	local assembling = RPL.asm and RPL.asm.active
 	if f and ( assembling or st.kind ~= "none" ) then
 		for _, t in ipairs( f.members or {} ) do
 			if t.n ~= st.me and not st.byName[ t.n ] then
 				local p = { name = t.n, pending = true, g = t.g, s = t.s, cls = RPL.Store.GetClass( t.n ) }
 				table.insert( m.pending, p )
-				m.invitable = m.invitable + 1
 				m.badge = true
+			end
+		end
+		table.sort( m.pending, function( a, b )
+			if ( a.g or 0 ) ~= ( b.g or 0 ) then return ( a.g or 0 ) < ( b.g or 0 ) end
+			return ( a.s or 0 ) < ( b.s or 0 )
+		end )
+		-- Мест на всех может не хватить: их занимают «не из состава». Зовём по порядку мест,
+		-- последние не помещаются (m.overflow). Вне группы считаем всех: места ещё свободны.
+		local free = V.FreeSlots( st, f )
+		for i, p in ipairs( m.pending ) do
+			if st.kind ~= "none" and i > free then
+				table.insert( m.overflow, p.name )
+			else
+				m.invitable = m.invitable + 1
 			end
 		end
 		for _, p in ipairs( m.pending ) do
@@ -128,10 +144,18 @@ function V.BuildCurrent( st )
 	return m
 end
 
+-- Сколько ещё мест в составе, если собирать в нём f: группа, которая станет отрядом,
+-- считается по вместимости отряда
+function V.FreeSlots( st, f )
+	local kind = st.kind
+	if kind == "none" or ( kind == "party" and f and RPL.IsRaidKind( f.kind ) ) then kind = f and f.kind or kind end
+	return math.max( 0, RPL.KindGroups( kind ) * RPL.GROUP_SIZE - math.max( #st.list, 1 ) )
+end
+
 function V.BuildDetail( f, st )
 	local ng = RPL.KindGroups( f.kind )
 	local assist = RPL.Set( f.assist )
-	local m = { f = f, ng = ng, groups = {}, invitable = 0 }
+	local m = { f = f, ng = ng, groups = {}, invitable = 0, missing = 0 }
 	for g = 1, ng do m.groups[ g ] = {} end
 	for _, t in ipairs( f.members or {} ) do
 		local g = math.max( 1, math.min( t.g or 1, ng ) )
@@ -139,8 +163,10 @@ function V.BuildDetail( f, st )
 			table.insert( m.groups[ g ], { name = t.n, s = t.s, saved = true,
 				leader = ( f.leader == t.n ), assist = assist[ t.n ], loot = ( f.loot == t.n ) } )
 		end
-		if t.n ~= st.me and not st.byName[ t.n ] then m.invitable = m.invitable + 1 end
+		if t.n ~= st.me and not st.byName[ t.n ] then m.missing = m.missing + 1 end
 	end
+	-- сколько реально позовёт «Пригласить всех» (вне группы места ещё свободны)
+	m.invitable = st.kind == "none" and m.missing or math.min( m.missing, V.FreeSlots( st, f ) )
 	for g = 1, ng do
 		table.sort( m.groups[ g ], function( a, b ) return ( a.s or 0 ) < ( b.s or 0 ) end )
 	end
@@ -284,7 +310,8 @@ local function RenderCurrentSlot( slot, e, ctx )
 		local facTex = st.crossFaction and e.fac and ( FAC_TEX[ e.fac ] or "FAC_OTHER" ) or nil
 		RPL.Show( slot.FactionBadge, facTex and RPL.SetTex( slot.FactionBadge, "Icons", facTex ) )
 
-		local icon = ( e.ready and READY_ICON[ e.ready ] ) or ( e.offline and "OFFLINE" ) or ( off and "MISPLACED" ) or nil
+		local icon = ( e.ready and READY_ICON[ e.ready ] ) or ( e.offline and "OFFLINE" ) or ( e.stranger and "STRANGER" )
+			or ( off and "MISPLACED" ) or nil
 		RPL.Show( slot.StatusIcon, icon and RPL.SetTex( slot.StatusIcon, "Icons", icon ) )
 	end
 	-- одна кнопка справа на карточке
@@ -371,7 +398,7 @@ function V.RenderLootBar( mode )
 			scheme, quality, enabled = f and f.lootScheme, f and f.lootQuality, false
 		end
 	else
-		local f = RPL.Store.Get( RPL.detailId )
+		local f = V.DetailF()
 		scheme, quality, enabled = f and f.lootScheme, f and f.lootQuality, f ~= nil
 	end
 	local s, q = RPL.Scheme( scheme ), RPL.Quality( quality )
@@ -405,7 +432,7 @@ local function RenderModeChip( st )
 	local kind = st.kind
 	local cap = RPL.KindGroups( kind ) * RPL.GROUP_SIZE
 	if kind == "none" then
-		RPL.SetText( RPL.W( "ModeText" ), RPL.L.kindNone )
+		RPL.SetText( RPL.W( "ModeText" ), ( RPL.asm and RPL.asm.active ) and RPL.L.kindNoneAsm or RPL.L.kindNone )
 	else
 		RPL.SetText( RPL.W( "ModeText" ), RPL.F( RPL.L.modeChip, RPL.KindLabel( kind ), #st.list, cap ) )
 	end
@@ -423,23 +450,33 @@ local function RenderCurrent()
 	local kind = ( st.kind ~= "none" ) and st.kind or f.kind
 	local raidKind = RPL.IsRaidKind( kind )
 
-	-- связь с сохранённым
+	-- связь: сохранённое, снимок из «Быстрого» (не сохранено) или ничего (неизвестный состав)
+	local quick = ( RPL.link == RPL.Store.QUICK )
+	local saved = f ~= nil and not quick
 	local summary = f and V.DiffSummary( f, st )
 	-- перестановки (другая группа или другой порядок в группе) — тоже изменение: можно «Обновить»
 	local differs = summary ~= nil or #m.misplaced > 0 or #m.misordered > 0
 	RPL.Show( RPL.W( "LinkIcon" ), f ~= nil )
-	RPL.SetText( RPL.W( "LinkTitle" ), f and f.name or ( raidKind and RPL.L.currentRaid or RPL.L.currentParty ) )
+	local title = ( saved and f.name ) or ( quick and RPL.F( RPL.L.linkQuick, f.name ) )
+		or ( raidKind and RPL.L.currentRaid or RPL.L.currentParty )
+	RPL.SetText( RPL.W( "LinkTitle" ), title )
 	local stateText = f and ( summary or "" ) or RPL.L.notSaved
+	-- кому не хватило места из-за «не из состава» — последние по местам
+	if #m.overflow > 0 then
+		local o = RPL.F( RPL.L.diffOverflow, table.concat( m.overflow, ", " ) )
+		stateText = ( stateText ~= "" ) and ( stateText .. " · " .. o ) or o
+	end
 	RPL.SetText( RPL.W( "LinkState" ), stateText )
 	-- нет второй строки — название по центру панели, без пустоты под ним
 	SetPosY( RPL.W( "LinkTitle" ), RPL.Px( stateText == "" and 14 or 6 ) )
-	local canUpdate = f and differs and st.kind ~= "none"
+	local canUpdate = saved and differs and st.kind ~= "none"
+	local canSave = not saved
 	-- текст занимает всё место до видимых кнопок справа
 	local P = RPL.Px
-	local reserve = canUpdate and ( P( 175 ) + P( 90 ) + P( 8 ) ) or ( not f and ( P( 7 ) + P( 140 ) + P( 8 ) ) ) or P( 7 )
-	-- выбор сохранённого вручную (например, вступил в чужой отряд) — левее кнопок
+	local reserve = canUpdate and ( P( 175 ) + P( 90 ) + P( 8 ) ) or ( canSave and ( P( 7 ) + P( 140 ) + P( 8 ) ) ) or P( 7 )
+	-- выбор сохранённого вручную (вступил в чужой отряд, собрал руками) — левее кнопок
 	local pick = RPL.W( "LinkPickButton" )
-	local canPick = st.kind ~= "none"
+	local canPick = st.kind ~= "none" or f ~= nil
 	RPL.Show( pick, canPick )
 	if canPick then
 		SetHighX( pick, reserve )
@@ -450,19 +487,19 @@ local function RenderCurrent()
 	RPL.Show( RPL.W( "UpdateButton" ), canUpdate )
 	RPL.Show( RPL.W( "SaveAsNewButton" ), canUpdate )
 	local save = RPL.W( "SaveButton" )
-	RPL.Show( save, not f )
+	RPL.Show( save, canSave )
 	RPL.SetLabel( save, raidKind and RPL.L.saveRaid or RPL.L.saveParty )
 	RPL.Enable( save, st.kind ~= "none" )
 	RPL.Show( RPL.W( "InfoText" ), false )
 
-	-- действия
+	-- действия: «Пригласить всех» — пока кого-то не хватает. Вне группы позовёт первого
+	-- по местам, в группе для отряда — сначала превратит её, остальных позовёт сам.
+	-- Число — сколько реально позовёт: на чужие места не рассчитываем.
 	local inviteAll = RPL.W( "InviteAllButton" )
-	-- Группа — «Пригласить всех» сразу. Отряд — только когда отряд уже есть: пока мы
-	-- вне группы или в группе, приглашения в группу пачкой повисли бы открытыми.
-	local showInviteAll = f ~= nil and m.invitable > 0 and ( f.kind == "party" or RPL.IsRaidKind( st.kind ) )
+	local showInviteAll = f ~= nil and #m.pending > 0
 	RPL.Show( inviteAll, showInviteAll )
 	RPL.SetLabel( inviteAll, RPL.F( RPL.L.inviteAll, m.invitable ) )
-	RPL.Enable( inviteAll, m.invitable > 0 and st.canInvite )
+	RPL.Enable( inviteAll, m.invitable > 0 and st.canInvite and not RPL.KindBlocked( st.kind, f and f.kind ) )
 	local placeAll = RPL.W( "PlaceAllButton" )
 	-- «Расставить» встаёт к левому краю, когда «Пригласить всех» скрыта
 	SetPosX( placeAll, showInviteAll and RPL.Px( 172 ) or 0 )
@@ -533,25 +570,74 @@ function V.RenderSaved()
 	RPL.savedDirty = false
 end
 
+-- Формирование на экране карточки: сохранённое (вкладка «Сохранённые») или из «Быстрого».
+-- Второе значение — ключ, под которым его собирают и связывают (id или Store.QUICK).
+function V.DetailF()
+	if RPL.tab == "quick" then
+		local key = RPL.Store.QuickKey()
+		return RPL.Store.Get( key ), key
+	end
+	return RPL.Store.Get( RPL.detailId ), RPL.detailId
+end
+
+-- Можно ли сейчас собирать f с этого экрана. Нет — текст причины.
+-- Вне группы — можно. В группе — только если «Текущее» уже связано именно с ним
+-- (иначе это чужой или другой состав: выбрать скрепкой или выйти).
+function V.CanAssemble( st, f, key )
+	if st.kind == "none" then return true end
+	if RPL.link ~= key then
+		local cur = RPL.Store.Get( RPL.link )
+		if cur and RPL.link ~= RPL.Store.QUICK then return false, RPL.F( RPL.L.noteOther, cur.name ) end
+		if cur then return false, RPL.F( RPL.L.noteOther, RPL.F( RPL.L.linkQuick, cur.name ) ) end
+		return false, RPL.L.noteUnknown
+	end
+	if RPL.KindBlocked( st.kind, f.kind ) then
+		return false, RPL.F( RPL.L.noteKind, RPL.L.kindIn[ st.kind ] or "", RPL.L.kindTo[ f.kind ] or "" )
+	end
+	if not st.canInvite then return false, RPL.L.noteNotLeader end
+	return true
+end
+
 local function RenderDetail()
-	local f = RPL.Store.Get( RPL.detailId )
+	local f, key = V.DetailF()
+	local quick = RPL.tab == "quick"
+	RPL.Show( RPL.W( "DetailView" ), f ~= nil )
+	RPL.Show( RPL.W( "QuickEmptyView" ), quick and f == nil )
 	if not f then
-		RPL.tab = "saved"
-		RPL.savedDirty = true
-		return V.Render()
+		RPL.Show( ui.groupsPanel, false )
+		if not quick then
+			RPL.tab = "saved"
+			RPL.savedDirty = true
+			return V.Render()
+		end
+		return
 	end
 	local st = RPL.st
 	local m = V.BuildDetail( f, st )
+	local snap = quick and key == RPL.Store.QUICK
+	local P = RPL.Px
+	-- шапка: в «Быстром» нет «назад», зато есть «Сохранить» (у снимка) и «Удалить»
+	RPL.Show( RPL.W( "BackButton" ), not quick )
+	RPL.Show( RPL.W( "QuickSaveButton" ), snap )
+	RPL.Show( RPL.W( "QuickDeleteButton" ), quick )
+	local left = quick and P( 14 ) or P( 52 )
+	local right = ( snap and P( 230 ) ) or ( quick and P( 122 ) ) or P( 90 )
+	for _, n in ipairs( { "DetailTitle", "DetailMeta" } ) do
+		SetPosX( RPL.W( n ), left )
+		SetHighX( RPL.W( n ), right )
+	end
 	RPL.SetText( RPL.W( "DetailTitle" ), f.name )
-	RPL.SetText( RPL.W( "DetailMeta" ), RPL.F( RPL.L.members, #( f.members or {} ) ) )
+	local n = #( f.members or {} )
+	RPL.SetText( RPL.W( "DetailMeta" ), ( snap and RPL.F( RPL.L.quickMetaSnap, n ) )
+		or ( quick and RPL.F( RPL.L.quickMetaRef, n ) ) or RPL.F( RPL.L.members, n ) )
 	RPL.Show( RPL.W( "DetailKindParty" ), f.kind == "party" )
 	RPL.Show( RPL.W( "DetailKindRaid" ), f.kind == "raid" )
 	RPL.Show( RPL.W( "DetailKindSmall" ), f.kind == "small" )
 	local start = RPL.W( "StartInviteButton" )
-	-- отряд с нуля: сначала зовём только первого по местам (см. RPL.RaidFromScratch)
-	RPL.SetLabel( start, RPL.RaidFromScratch( st, f ) and RPL.L.startRaid or RPL.F( RPL.L.inviteAll, m.invitable ) )
-	RPL.Enable( start, m.invitable > 0 and st.canInvite )
-	RPL.SetText( RPL.W( "InviteNote" ), st.canInvite and "" or RPL.L.noteNotLeader )
+	RPL.SetLabel( start, RPL.F( RPL.L.inviteAll, m.invitable ) )
+	local ok, why = V.CanAssemble( st, f, key )
+	RPL.Enable( start, ok and m.invitable > 0 )
+	RPL.SetText( RPL.W( "InviteNote" ), why or "" )
 	RPL.Show( ui.groupsPanel, true )
 	RenderGroups( m, "detail", {} )
 end
@@ -613,17 +699,21 @@ function V.Render()
 	local cols = 1
 	if tab == "current" and not ( st.kind == "none" and not RPL.model.f ) then
 		cols = math.max( 1, RPL.model.ng )
-	elseif tab == "detail" then
-		local f = RPL.Store.Get( RPL.detailId )
+	elseif tab == "detail" or tab == "quick" then
+		local f = V.DetailF()
 		cols = f and RPL.KindGroups( f.kind ) or 1
 	end
 	SetWindowWidth( cols )
 	RPL.Show( RPL.W( "TabCurrentLine" ), tab == "current" )
-	RPL.Show( RPL.W( "TabSavedLine" ), tab ~= "current" )
+	RPL.Show( RPL.W( "TabSavedLine" ), tab == "saved" or tab == "detail" )
+	RPL.Show( RPL.W( "TabQuickLine" ), tab == "quick" )
 	RenderModeChip( st )
 
 	RPL.Show( RPL.W( "SavedView" ), tab == "saved" )
-	RPL.Show( RPL.W( "DetailView" ), tab == "detail" )
+	if tab ~= "detail" and tab ~= "quick" then
+		RPL.Show( RPL.W( "DetailView" ), false )
+		RPL.Show( RPL.W( "QuickEmptyView" ), false )
+	end
 	if tab ~= "current" then
 		RPL.Show( RPL.W( "CurrentView" ), false )
 		RPL.Show( RPL.W( "EmptyView" ), false )
@@ -638,6 +728,6 @@ function V.Render()
 		if RPL.savedDirty then V.RenderSaved() end
 	else
 		RenderDetail()
-		V.RenderLootBar( "detail" )
+		V.RenderLootBar( V.DetailF() and "detail" or nil )
 	end
 end
