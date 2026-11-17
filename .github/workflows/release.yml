@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Тег версии, например v0.11.0
+        description: Тег версии, например v0.11.1
         required: true
 
 jobs:
