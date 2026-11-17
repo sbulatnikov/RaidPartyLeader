@@ -21,6 +21,7 @@ RPL.model = nil
 local started = false
 local prevKind = "none"
 local wasInGroup, noneSince = false, nil -- для сброса связи после роспуска
+local firstTurn = 0 -- сбор отряда вне группы: кого по порядку мест звали последним
 
 --------------------------------------------------------------------------------
 -- Темп операций с отрядом. Если слать перенос и права пачкой, сервер обрабатывает
@@ -165,6 +166,7 @@ local function ResetLink()
 	RPL.link = nil
 	Store.SetLink( nil )
 	RPL.asm = nil
+	firstTurn = 0
 	RPL.placing = 0
 	RPL.order = {}
 	RPL.sel = nil
@@ -181,6 +183,7 @@ function RPL.Refresh()
 	-- Ждём 2 секунды: при превращении группы в отряд может быть момент «ни того, ни другого».
 	if st.kind ~= "none" then
 		wasInGroup, noneSince = true, nil
+		firstTurn = 0
 	elseif wasInGroup then
 		noneSince = noneSince or RPL.tick
 		if RPL.tick - noneSince >= 2 then
@@ -270,8 +273,10 @@ local function Missing( st, f )
 end
 
 -- Позвать недостающих f:
---   вне группы: группа — всех; отряд — первого по местам. Приглашения в группу пачкой
---     повисли бы открытыми, когда она станет отрядом. Кто примет — группа станет отрядом
+--   вне группы: группа — всех; отряд — одного: сначала первого по местам, при каждом
+--     следующем нажатии — следующего (первый может быть не в сети, а узнать это вне группы
+--     нельзя). Приглашения в группу пачкой повисли бы открытыми, когда она станет отрядом.
+--     Кто примет — группа станет отрядом
 --     (MaybeConvert), и остальных аддон позовёт сам один раз (SyncAssembly, inviteRestAt);
 --   в группе, а собираем отряд: сначала превращаем группу, остальных — когда отряд появится;
 --   иначе: всех, сколько помещается. Места считаются по всем в составе, и по
@@ -282,8 +287,10 @@ InviteMissing = function( f )
 	EnsureAsm()
 	local list = Missing( st, f )
 	if st.kind == "none" and RPL.IsRaidKind( f.kind ) then
-		if list[ 1 ] then RPL.InviteNow( list[ 1 ].n ) return 1 end
-		return 0
+		if #list == 0 then return 0 end
+		firstTurn = firstTurn % #list + 1
+		RPL.InviteNow( list[ firstTurn ].n )
+		return 1
 	end
 	if st.kind == "party" and RPL.IsRaidKind( f.kind ) and #st.list >= 2 then
 		RPL.asm.convertAt = nil
@@ -317,6 +324,10 @@ local function Assemble( key, fresh )
 		RPL.Toast( RPL.F( RPL.L.noteKind, RPL.L.kindIn[ st.kind ] or "", RPL.L.kindTo[ f.kind ] or "" ) )
 		return
 	end
+	-- Ожидаем: вне группы, а в формировании только мы сами — звать некого, сбор не начинаем
+	-- (иначе он висел бы «идёт сбор» без конца)
+	if st.kind == "none" and #Missing( st, f ) == 0 then return end
+	if RPL.link ~= key then firstTurn = 0 end
 	if RPL.link ~= key or fresh then
 		RPL.order = {}
 		RPL.asm = nil
@@ -413,6 +424,11 @@ end
 local function LinkItems()
 	local st = RPL.st
 	local items = {}
+	-- вне группы связывать не с чем: скрепка только отменяет сбор, если он идёт
+	if not st or st.kind == "none" then
+		if RPL.link then items[ 1 ] = { unlink = true, label = RPL.L.linkCancel } end
+		return items
+	end
 	for order, f in ipairs( Store.List() ) do
 		local here, total = 0, #( f.members or {} )
 		for _, t in ipairs( f.members or {} ) do
@@ -437,7 +453,10 @@ local function OpenMenu( kind )
 	local items
 	if kind == "link" then
 		items = LinkItems()
-		if #items == 0 then RPL.Toast( RPL.L.linkNone ) return end
+		if #items == 0 then
+			RPL.Toast( ( RPL.st and RPL.st.kind ~= "none" ) and RPL.L.linkNone or RPL.L.linkNoGroup )
+			return
+		end
 	else
 		items = ( kind == "scheme" ) and RPL.SCHEMES or RPL.QUALITIES
 	end
@@ -498,7 +517,7 @@ local function OnMenuPick( params )
 		if it.unlink then
 			ResetLink()
 			RPL.Toast( RPL.L.linkUnlinked )
-		elseif it.id ~= RPL.link then
+		elseif it.id ~= RPL.link and RPL.st and RPL.st.kind ~= "none" then
 			-- скрепка = «мы в этом сохранённом»: работают Shift+ПКМ, «Пригласить всех», расстановка
 			ResetLink()
 			RPL.link = it.id
@@ -818,6 +837,12 @@ local function OnSnapshot()
 	local st = RPL.st
 	if not st or st.kind == "none" or not RPL.model then return end
 	local f = Store.Get( RPL.link )
+	-- Ожидаем: идёт сбор снимка, пришли ещё не все — ПКМ заменил бы снимок неполным
+	-- составом. Не заменяем и говорим, как запомнить новый состав.
+	if RPL.link == Store.QUICK and Store.QuickIsSnap() and RPL.asm and RPL.asm.active then
+		RPL.Toast( RPL.L.toastQuickBusy )
+		return
+	end
 	if f and RPL.link ~= Store.QUICK then
 		Store.SetQuickRef( RPL.link )
 		RPL.Toast( RPL.F( RPL.L.toastQuickRef, f.name ) )

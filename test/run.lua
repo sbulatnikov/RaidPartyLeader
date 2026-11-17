@@ -63,7 +63,7 @@ react( "rpl_toggle" ) second()
 check( RPL.link == nil and RPL.tab == "current", "старт: без связи" )
 check( CONFIG.RaidPartyLeader.autoRetry == nil, "старт: ключ autoRetry убран" )
 check( FIND( "EmptyView" ).visible, "старт: «Вы не в группе»" )
-check( RPL.VERSION == "0.11.0", "версия 0.11.0" )
+check( RPL.VERSION == "0.11.1", "версия 0.11.1" )
 
 -- 2. Неизвестный состав: ровно как в сохранённом «Пати», но связи нет — угадывания больше нет
 SET( "party", { { ME, "Ксаэль", "Сельвия", "Тиаль", "Ферония", "Дорн" } } )
@@ -211,6 +211,42 @@ SET( "party", { { "Вельмира", ME } }, "Вельмира" ) second()
 INVITES = {}
 SET( "raid", { { "Вельмира", ME } }, "Вельмира" ) second( 3 )
 check( #INVITES == 0, "в чужом отряде без прав остальных не зовём" )
+
+-- 14. Отряд вне группы: повторное нажатие зовёт следующего по местам
+LEAVE() second( 3 )
+Store.SetQuickRef( 1 )
+INVITES = {}
+rmb( true ) second()
+rmb( true ) second()
+check( #INVITES == 2 and INVITES[ 1 ].to == "Вельмира" and INVITES[ 2 ].to == "Ксаэль", "отряд вне группы: второй раз позван следующий по местам" )
+
+-- 15. Вне группы скрепка только отменяет сбор и ни с чем не связывает
+react( "rpl_link_pick" )
+check( TEXT( "MenuText1" ) == "Отменить сбор" and not FIND( "MenuOpt2" ).visible, "вне группы в меню скрепки только «Отменить сбор»" )
+react( "rpl_menu_pick", "MenuOpt1" ) second()
+check( RPL.link == nil and RPL.asm == nil, "«Отменить сбор»: связи и сбора нет" )
+
+-- 16. Идёт сбор снимка: ПКМ без Shift снимок не затирает
+SET( "small", G12 ) second()
+rmb( false )
+LEAVE() second( 3 )
+INVITES = {}
+rmb( true ) second()
+SET( "party", { { ME, "Вельмира" } } ) second()
+rmb( false ) second()
+check( #Store.Get( Store.QUICK ).members == 12 and string.find( toast(), "не заменён", 1, true ), "идёт сбор снимка: ПКМ его не затирает" )
+
+-- 17. В формировании только мы сами: вне группы сбор не начинается
+LEAVE() second( 3 )
+Store.ClearQuick()
+SET( "party", { { ME, "Тарвин" } } ) second()
+rmb( false )
+local solo = Store.Get( Store.QUICK )
+solo.members = { solo.members[ 1 ] }
+LEAVE() second( 3 )
+INVITES = {}
+rmb( true ) second()
+check( #INVITES == 0 and RPL.asm == nil, "состав из одного себя: сбор не начинается" )
 
 print( fails == 0 and "ВСЁ ОК" or ( "ИТОГ: ошибок " .. fails ) )
 os.exit( fails == 0 and 0 or 1 )

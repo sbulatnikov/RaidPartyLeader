@@ -120,7 +120,7 @@ wxml('Widgets/MainForm.(WidgetForm).xdb', f'''<?xml version="1.0" encoding="UTF-
 \t<Visible>true</Visible>
 </WidgetForm>
 ''')
-wtext('Texts/AddonName.txt', 'RaidPartyLeader v0.11.0')
+wtext('Texts/AddonName.txt', 'RaidPartyLeader v0.11.1')
 wtext('Texts/AddonDescription.txt', 'Сохраняет и собирает группы и отряды')
 wxml('AddonDesc.(UIAddon).xdb', f'''<?xml version="1.0" encoding="UTF-8" ?>
 <UIAddon>
@@ -130,7 +130,7 @@ wxml('AddonDesc.(UIAddon).xdb', f'''<?xml version="1.0" encoding="UTF-8" ?>
 \t\t<name href="Texts/AddonName.txt" />
 \t\t<description href="Texts/AddonDescription.txt" />
 \t\t<author>NoMercy</author>
-\t\t<version>0.11.0</version>
+\t\t<version>0.11.1</version>
 \t</userAddonInfo>
 \t<ScriptFileRefs>
 \t\t<Item href="Scripts/LibDnD.lua" />
