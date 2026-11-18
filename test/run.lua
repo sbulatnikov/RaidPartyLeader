@@ -63,7 +63,7 @@ react( "rpl_toggle" ) second()
 check( RPL.link == nil and RPL.tab == "current", "старт: без связи" )
 check( CONFIG.RaidPartyLeader.autoRetry == nil, "старт: ключ autoRetry убран" )
 check( FIND( "EmptyView" ).visible, "старт: «Вы не в группе»" )
-check( RPL.VERSION == "0.11.1", "версия 0.11.1" )
+check( RPL.VERSION == "0.11.2", "версия 0.11.2" )
 
 -- 2. Неизвестный состав: ровно как в сохранённом «Пати», но связи нет — угадывания больше нет
 SET( "party", { { ME, "Ксаэль", "Сельвия", "Тиаль", "Ферония", "Дорн" } } )
