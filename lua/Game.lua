@@ -63,9 +63,10 @@ function G.Aspect( objectId )
 	return k
 end
 
-local function ClassKey( m )
+-- Класс из сведений об участнике; ask — если там пусто, спросить у игры по id (игрок рядом)
+local function ClassKey( m, ask )
 	local c = m.className
-	if ( type( c ) ~= "string" or c == "" ) and Exists( m.id ) then
+	if ask and ( type( c ) ~= "string" or c == "" ) and Exists( m.id ) then
 		local info = unit.GetClass( m.id )
 		-- Ожидаем: GetClass возвращает nil, если данные недоступны
 		if type( info ) == "table" then c = info.className end
@@ -173,19 +174,17 @@ local function AddMember( st, g, s, m, isRaid, solo )
 	else
 		e.offline = ( m.state == GROUP_MEMBER_STATE_OFFLINE )
 	end
-	-- класс персонажа не меняется: запоминаем один раз (по ID в сессии, по нику в конфиге),
-	-- потому что у участника вне игры className не приходит
-	local cls = ( m.uniqueId and classByMember[ m.uniqueId ] ) or RPL.Store.GetClass( name )
-	if not cls then
-		local k = ClassKey( m )
-		if k ~= "UNKNOWN" then
-			cls = k
-			if m.uniqueId then classByMember[ m.uniqueId ] = k end
-			RPL.Store.SetClass( name, k )
-		end
-	elseif m.uniqueId and not classByMember[ m.uniqueId ] then
-		classByMember[ m.uniqueId ] = cls
+	-- Класс игрок может сменить, поэтому верим тому, что игра прислала сейчас, и обновляем
+	-- запомненное. Запомненное (по ID в сессии, по нику в конфиге) нужно только тогда, когда
+	-- игра класс не прислала: у участника вне игры className не приходит.
+	local known = ( m.uniqueId and classByMember[ m.uniqueId ] ) or RPL.Store.GetClass( name )
+	local cls = ClassKey( m, known == nil )
+	if cls == "UNKNOWN" then
+		cls = known
+	elseif cls ~= known then
+		RPL.Store.SetClass( name, cls )
 	end
+	if cls and m.uniqueId then classByMember[ m.uniqueId ] = cls end
 	e.cls = cls or "UNKNOWN"
 	-- сервер и фракция: чужие не сохраняются и в сравнении с сохранённым не участвуют
 	local c = CrossInfo( m, name )
