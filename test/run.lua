@@ -63,7 +63,7 @@ react( "rpl_toggle" ) second()
 check( RPL.link == nil and RPL.tab == "current", "старт: без связи" )
 check( CONFIG.RaidPartyLeader.autoRetry == nil, "старт: ключ autoRetry убран" )
 check( FIND( "EmptyView" ).visible, "старт: «Вы не в группе»" )
-check( RPL.VERSION == "0.11.1", "версия 0.11.1" )
+check( RPL.VERSION == "0.11.2", "версия 0.11.2" )
 
 -- 2. Неизвестный состав: ровно как в сохранённом «Пати», но связи нет — угадывания больше нет
 SET( "party", { { ME, "Ксаэль", "Сельвия", "Тиаль", "Ферония", "Дорн" } } )
@@ -247,6 +247,24 @@ LEAVE() second( 3 )
 INVITES = {}
 rmb( true ) second()
 check( #INVITES == 0 and RPL.asm == nil, "состав из одного себя: сбор не начинается" )
+
+-- 18. Игрок сменил класс: при новом входе в состав значок новый, запомненный класс обновлён;
+-- вне игры (className не приходит) показываем запомненный. Смена класса — не изменение состава.
+LEAVE() second( 3 )
+CLS[ "Тарвин" ] = "MAGE"
+SET( "party", { { ME, "Тарвин" } } ) second()
+react( "rpl_save" ) react( "rpl_dialog_ok" ) second()
+local savedId = RPL.link
+check( RPL.st.byName[ "Тарвин" ].cls == "MAGE" and Store.GetClass( "Тарвин" ) == "MAGE", "класс участника прочитан" )
+LEAVE() second( 3 )
+CLS[ "Тарвин" ] = "PRIEST"
+SET( "party", { { ME, "Тарвин" } } ) second()
+check( RPL.st.byName[ "Тарвин" ].cls == "PRIEST" and Store.GetClass( "Тарвин" ) == "PRIEST", "сменил класс: значок и запомненный класс новые" )
+RPL.link = savedId Store.SetLink( savedId ) RPL.Refresh()
+check( RPL.View.DiffSummary( Store.Get( savedId ), RPL.st ) == nil, "смена класса — не изменение состава" )
+CLS[ "Тарвин" ] = ""
+second()
+check( RPL.st.byName[ "Тарвин" ].cls == "PRIEST", "класс не пришёл: показываем запомненный" )
 
 print( fails == 0 and "ВСЁ ОК" or ( "ИТОГ: ошибок " .. fails ) )
 os.exit( fails == 0 and 0 or 1 )

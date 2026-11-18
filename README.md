@@ -5,7 +5,7 @@
 
 ![Окно RaidPartyLeader](release/promo/RaidPartyLeader-1-cover.png)
 
-Версия 0.11.1 (бета). Автор — NoMercy.
+Версия 0.11.2 (бета). Автор — NoMercy.
 
 ## Что умеет
 
