@@ -6,7 +6,7 @@
 		<name href="Texts/AddonName.txt" />
 		<description href="Texts/AddonDescription.txt" />
 		<author>NoMercy</author>
-		<version>0.11.2</version>
+		<version>0.11.3</version>
 	</userAddonInfo>
 	<ScriptFileRefs>
 		<Item href="Scripts/LibDnD.lua" />
