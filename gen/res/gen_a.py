@@ -87,6 +87,8 @@ _RK = _K * 0.8  # кнопка RPL на 20% меньше
 _R = int(20 * _RK + 0.5)
 L['rplRing'] = T.save('RplRing', ring_img(64, _R, max(1, int(2*_RK+0.5)), max(1, int(2*_RK+0.5))), stretch=True, frame=(_R, _R, _R, _R))['frame']
 
+# колокольчик: уведомления включены / выключены (кнопка в шапке окна)
+BELL = [(3,11.5),(4.3,9.8),(4.3,7),(5,4.8),(6.4,3.4),(8,2.9),(9.6,3.4),(11,4.8),(11.7,7),(11.7,9.8),(13,11.5)]
 ICONS = {
  'IconCrown': ('#F5C04A', dict(polys=[CROWN], lines=[[(3,13.5),(13,13.5)]], width=1.6)),
  'IconStar': ('#8EC5FF', dict(polys=[STAR])),
@@ -101,6 +103,8 @@ ICONS = {
  'IconBack': ('#DCD4E2', dict(lines=[[(9.7,3.4),(5.1,8),(9.7,12.6)]], width=2)),
  'IconRename': ('#A79DAE', dict(polys=[[(10.5,2.5),(13.5,5.5),(6,13),(3,13),(3,10)]])),
  'IconDelete': ('#A79DAE', dict(lines=[[(2.5,4),(13.5,4)], [(6,4),(6,2.5),(10,2.5),(10,4)], [(4,4),(4.7,13.5),(11.3,13.5),(12,4)], [(6.6,6.5),(6.6,11)], [(9.4,6.5),(9.4,11)]])),
+ 'IconBell': ('#E58BE7', dict(polys=[BELL], circles=[(8,13.5,1.0,True)], width=1.6)),
+ 'IconBellOff': ('#7F7686', dict(polys=[BELL], circles=[(8,13.5,1.0,True)], lines=[[(2.6,2.6),(13.4,13.8)]], width=1.6)),
  'IconFlag': ('#FF8FD0', dict(lines=[[(4,14.6),(4,2)]], fills=[[(4,2.6),(12.7,2.6),(10.7,5.6),(12.7,8.7),(4,8.7)]], width=1.7)),
  'StInvited': ('#F5B841', dict(circles=[(8,8,6.1,False)], lines=[[(8,4.8),(8,8),(10.3,9.6)]], width=2)),
  'StDeclined': ('#F0607A', dict(lines=[[(4,4),(12,12)], [(12,4),(4,12)]], width=2.6)),
@@ -154,6 +158,6 @@ QUALITY_COLORS = [('JUNK', '#999999'), ('GOODS', '#DCDCDC'), ('COMMON', '#00E526
 for _q, _c in QUALITY_COLORS:
     T.save(f'Quality{_q.title()}', circle(16, _c, '#101218', 1), stretch=True, element=True)
 G_ICONS = T.group('Icons', [(f'Q_{_q}', f'Quality{_q.title()}') for _q, _c in QUALITY_COLORS] + [('DOT_OK','DotOk'), ('DOT_WARN','DotWarn'), ('DOT_BAD','DotBad'), ('INVITED','StInvited'), ('DECLINED','StDeclined'), ('FAILED','StFailed'), ('OFFLINE','StOffline'), ('MISSING','StMissing'), ('STRANGER','StStranger'), ('READY','StReady'), ('FAC_LEAGUE','BadgeLeague'), ('FAC_EMPIRE','BadgeEmpire'), ('FAC_OTHER','BadgeFaction'), ('MISPLACED','IconFlag'),
-                             ('CHECK_ON','CheckOn'), ('CHECK_OFF','CheckOff')])
+                             ('BELL_ON','IconBell'), ('BELL_OFF','IconBellOff'), ('CHECK_ON','CheckOn'), ('CHECK_OFF','CheckOff')])
 def lay(key): return 'Textures/' + L[key]
 def ic(name): return 'Textures/' + T.made[name]['stretch']

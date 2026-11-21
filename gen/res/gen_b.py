@@ -119,6 +119,8 @@ HEADER = panel('Header', (1, 1, None, 43, {'ax': 'WIDGET_ALIGN_BOTH', 'hx': 1}),
   panel('AccentMark', (13, 16, 10, 10), back=lay('mark'), transparent=True),
   text('TitleText', (31, 0, 160, 43), 'RaidPartyLeader', font=FONT_TITLE, size=15),
   panel('ModeChip', (186, 10, 190, 24), back=lay('chip'), transparent=True, children=[value('ModeText', (0, 0, 190, 24), size=12, color='0xffbdb4c4', alignx='center')]),
+  # колокольчик: показывать ли уведомления (значок меняет Lua: BELL_ON / BELL_OFF)
+  button('BellButton', (None, 7, 28, 28, {'ax': 'WIDGET_ALIGN_HIGH', 'hx': 39}), '', 'rpl_bell', style='ghost', children=[iconp('BellIcon', (6, 6, 16, 16), 'IconBell')]),
   button('CloseButton', (None, 7, 28, 28, {'ax': 'WIDGET_ALIGN_HIGH', 'hx': 7}), '', 'rpl_close', style='ghost', children=[iconp('CloseIcon', (7, 7, 14, 14), 'IconClose')]),
 ])
 TABS = panel('Tabs', (0, 45, None, 37, {'ax': 'WIDGET_ALIGN_BOTH', 'hx': 0}), pick=True, children=[

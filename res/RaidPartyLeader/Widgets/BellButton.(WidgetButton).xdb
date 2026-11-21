@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WidgetButton>
+	<Name>BellButton</Name>
+	<Placement>
+		<X>
+			<Size>34</Size>
+			<Align>WIDGET_ALIGN_HIGH</Align>
+			<HighPos>47</HighPos>
+		</X>
+		<Y>
+			<Pos>8</Pos>
+			<Size>34</Size>
+		</Y>
+	</Placement>
+	<IgnoreDblClick>true</IgnoreDblClick>
+	<TextTag>button_label</TextTag>
+	<Variants>
+		<Item>
+			<TextFileRef href="../Texts/BellButton.txt" />
+			<LayerHighlight href="Textures/GhostHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			<PushedOffset x="0" y="1" />
+			<StateNormal>
+				<LayerMain href="Textures/Transparent.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/BellButton.Format.txt" />
+			</StateNormal>
+			<StatePushed>
+				<LayerMain href="Textures/GhostHover.Frame_6_6_6_6.(WidgetLayerTiledTexture).xdb" />
+			</StatePushed>
+			<StateDisabled>
+				<LayerMain href="Textures/Transparent.Stretch.(WidgetLayerSimpleTexture).xdb" />
+				<FormatFileRef href="../Texts/BellButton.Disabled.txt" />
+			</StateDisabled>
+			<Reaction>rpl_bell</Reaction>
+			<ReactionOnUp>true</ReactionOnUp>
+		</Item>
+	</Variants>
+	<TextStyle>
+		<Align>ALIGNY_MIDDLE</Align>
+	</TextStyle>
+	<Children>
+		<Item href="BellIcon.(WidgetPanel).xdb" />
+	</Children>
+</WidgetButton>

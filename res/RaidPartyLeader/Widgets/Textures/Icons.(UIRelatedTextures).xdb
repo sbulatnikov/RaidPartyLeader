@@ -90,6 +90,14 @@
 			<textureItem href="IconFlag.(UITextureElement).xdb" />
 		</Item>
 		<Item>
+			<name>BELL_ON</name>
+			<textureItem href="IconBell.(UITextureElement).xdb" />
+		</Item>
+		<Item>
+			<name>BELL_OFF</name>
+			<textureItem href="IconBellOff.(UITextureElement).xdb" />
+		</Item>
+		<Item>
 			<name>CHECK_ON</name>
 			<textureItem href="CheckOn.(UITextureElement).xdb" />
 		</Item>
