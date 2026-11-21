@@ -37,6 +37,27 @@ function Store.Load()
 	data.classes = data.classes or {}
 end
 
+-- Общие настройки аддона — одни на всех персонажей: глобальная секция конфига
+-- (Mods/Configs/RaidPartyLeader/user.cfg, блок global). Секция пишется целиком,
+-- поэтому перед записью читаем её заново.
+local function ReadGlobal()
+	local g = userMods.GetGlobalConfigSection( common.GetAddonName() )
+	-- Ожидаем: при первом запуске секции настроек нет (nil) — начинаем с пустой
+	return type( g ) == "table" and g or {}
+end
+
+-- Уведомления включены, пока их не выключили колокольчиком в шапке окна
+function Store.LoadGlobal()
+	RPL.toasts = ReadGlobal().toasts ~= false
+end
+
+function Store.SetToasts( on )
+	RPL.toasts = on and true or false
+	local g = ReadGlobal()
+	g.toasts = RPL.toasts
+	userMods.SetGlobalConfigSection( common.GetAddonName(), g )
+end
+
 --@debug
 -- Отладочная сборка: ключ debug=true|false в глобальной секции конфига
 -- (Mods/Configs/RaidPartyLeader/user.cfg, блок global). Править файл при закрытой игре.
