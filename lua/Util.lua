@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------------
 Global( "RPL", {} )
 
-RPL.VERSION = "0.11.2"
+RPL.VERSION = "0.11.3"
 RPL.tick = 0                 -- счётчик секунд (EVENT_SECOND_TIMER)
 RPL.GROUP_SIZE = 6
 RPL.UI_SCALE = 1.2          -- масштаб интерфейса; должен совпадать с RPL_SCALE генератора
@@ -53,6 +53,8 @@ RPL.L = {
 	quickName = "%s %d · %s",
 	quickMetaSnap = "Снимок по ПКМ · не сохранён · %d участн.",
 	quickMetaRef = "Из «Сохранённых» · %d участн.",
+	toastsOn = "Уведомления включены",
+	toastsOff = "Уведомления выключены. Подтверждения показываются всегда",
 	toastQuickSnap = "Снимок в «Быстрое»: %s",
 	toastQuickRef = "В «Быстрое»: %s",
 	toastQuickDeleted = "Снимок удалён",
@@ -392,8 +394,12 @@ end
 -- Тост
 --------------------------------------------------------------------------------
 RPL.toastLeft = 0
+RPL.toasts = true           -- показывать уведомления; общая настройка, см. Store.LoadGlobal
 
-function RPL.Toast( text )
+-- always = true — показать, даже если уведомления выключены: так идут подтверждения,
+-- без которых действие не выполнить («нажмите ещё раз»), и ответ самого колокольчика.
+function RPL.Toast( text, always )
+	if not RPL.toasts and not always then return end
 	RPL.SetText( RPL.W( "ToastText" ), text )
 	RPL.Show( RPL.W( "Toast" ), true )
 	RPL.toastLeft = RPL.TOAST_TIME

@@ -665,7 +665,7 @@ local function OnLeader()
 	if e.offline then RPL.Toast( RPL.F( RPL.L.toastLeaderOffline, e.name ) ) return end
 	if not ( leaderConfirm and leaderConfirm.name == e.name and RPL.tick - leaderConfirm.t <= 3 ) then
 		leaderConfirm = { name = e.name, t = RPL.tick }
-		RPL.Toast( RPL.F( RPL.L.toastLeaderConfirm, e.name ) )
+		RPL.Toast( RPL.F( RPL.L.toastLeaderConfirm, e.name ), true ) -- подтверждение: показываем всегда
 		return
 	end
 	leaderConfirm = nil
@@ -1133,7 +1133,19 @@ local CHANGE_EVENTS = {
 --------------------------------------------------------------------------------
 -- Запуск
 --------------------------------------------------------------------------------
+-- Колокольчик в шапке: показывать ли уведомления
+local function RenderBell()
+	RPL.SetTex( RPL.W( "BellIcon" ), "Icons", RPL.toasts and "BELL_ON" or "BELL_OFF" )
+end
+
+local function OnBell()
+	Store.SetToasts( not RPL.toasts )
+	RenderBell()
+	RPL.Toast( RPL.toasts and RPL.L.toastsOn or RPL.L.toastsOff, true )
+end
+
 local REACTIONS = {
+	rpl_bell = OnBell,
 	rpl_toggle = OnToggle,
 	rpl_close = OnClose,
 	rpl_tab_current = function() SetTab( "current" ) end,
@@ -1211,6 +1223,7 @@ local function Start()
 	started = true
 	Store.LoadSettings() --@debug
 	Store.Load()
+	Store.LoadGlobal()
 	-- связь из конфига переживает перезаход: вне игры сменить отряд нельзя.
 	-- Если после входа 2 секунды подряд вне группы — сбросится, как при выходе из формирования.
 	RPL.link = Store.GetLink()
@@ -1221,6 +1234,7 @@ local function Start()
 	RPL.Show( RPL.W( "SaveDialog" ), false )
 	RPL.Show( RPL.W( "Toast" ), false )
 	RPL.Show( RPL.W( "SavedRow" ), false )
+	RenderBell()
 
 	DnD.Init( RPL.W( "RPLHost" ), RPL.W( "RPLButton" ), true, true )
 	DnD.Init( V.ui.window, RPL.W( "Header" ), true, true )

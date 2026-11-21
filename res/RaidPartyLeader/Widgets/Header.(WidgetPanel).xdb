@@ -17,6 +17,7 @@
 		<Item href="AccentMark.(WidgetPanel).xdb" />
 		<Item href="TitleText.(WidgetTextView).xdb" />
 		<Item href="ModeChip.(WidgetPanel).xdb" />
+		<Item href="BellButton.(WidgetButton).xdb" />
 		<Item href="CloseButton.(WidgetButton).xdb" />
 	</Children>
 </WidgetPanel>

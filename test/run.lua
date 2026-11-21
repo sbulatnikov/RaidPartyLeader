@@ -63,7 +63,7 @@ react( "rpl_toggle" ) second()
 check( RPL.link == nil and RPL.tab == "current", "старт: без связи" )
 check( CONFIG.RaidPartyLeader.autoRetry == nil, "старт: ключ autoRetry убран" )
 check( FIND( "EmptyView" ).visible, "старт: «Вы не в группе»" )
-check( RPL.VERSION == "0.11.2", "версия 0.11.2" )
+check( RPL.VERSION == "0.11.3", "версия 0.11.3" )
 
 -- 2. Неизвестный состав: ровно как в сохранённом «Пати», но связи нет — угадывания больше нет
 SET( "party", { { ME, "Ксаэль", "Сельвия", "Тиаль", "Ферония", "Дорн" } } )
@@ -265,6 +265,41 @@ check( RPL.View.DiffSummary( Store.Get( savedId ), RPL.st ) == nil, "смена 
 CLS[ "Тарвин" ] = ""
 second()
 check( RPL.st.byName[ "Тарвин" ].cls == "PRIEST", "класс не пришёл: показываем запомненный" )
+
+-- 19. Уведомления можно выключить колокольчиком в шапке: аддон делает то же самое молча.
+-- Подтверждение передачи лидерства показывается всегда — без него действие не выполнить.
+local toastW = FIND( "Toast" )
+local function hidden() RPL.Show( toastW, false ) end   -- через RPL.Show: он помнит, что показано
+check( RPL.toasts == true and FIND( "BellIcon" ).tex == "tex:BELL_ON", "по умолчанию уведомления включены" )
+LEAVE() second( 3 )
+SET( "party", { { ME, "Тарвин" } } ) second()
+hidden() rmb( false )
+check( toastW.visible and string.find( toast(), "Быстрое", 1, true ), "включено: ПКМ показывает уведомление" )
+react( "rpl_bell", "BellButton" )
+check( RPL.toasts == false and GCONFIG.RaidPartyLeader.toasts == false, "колокольчик: выключено и сохранено в общих настройках" )
+check( FIND( "BellIcon" ).tex == "tex:BELL_OFF", "колокольчик: значок «выключено»" )
+check( toastW.visible and string.find( toast(), "выключены", 1, true ), "колокольчик отвечает и при выключении" )
+LEAVE() second( 3 )
+SET( "party", { { ME, "Тарвин" } } ) second()
+hidden() rmb( false )
+check( Store.Get( Store.QUICK ) ~= nil and RPL.link == Store.QUICK, "выключено: ПКМ по-прежнему делает снимок" )
+check( not toastW.visible, "выключено: уведомления о снимке нет" )
+hidden() RPL.sel = "Тарвин"
+react( "rpl_leader" )
+check( toastW.visible and string.find( toast(), "ещё раз", 1, true ) and STATE.leader == ME, "выключено: подтверждение лидерства показано, лидерство ещё не передано" )
+RPL.sel = "Тарвин" react( "rpl_leader" )
+check( STATE.leader == "Тарвин", "выключено: второе нажатие передаёт лидерство" )
+STATE.leader = ME second()
+-- настройка переживает перезапуск; прочие ключи общей секции не теряются
+GCONFIG.RaidPartyLeader.other = 5
+Store.LoadGlobal()
+check( RPL.toasts == false, "выключенное остаётся выключенным после загрузки" )
+react( "rpl_bell", "BellButton" )
+check( RPL.toasts == true and GCONFIG.RaidPartyLeader.toasts == true and GCONFIG.RaidPartyLeader.other == 5, "включили обратно: сохранено, чужой ключ секции цел" )
+check( FIND( "BellIcon" ).tex == "tex:BELL_ON" and string.find( toast(), "включены", 1, true ), "включили обратно: значок и ответ" )
+GCONFIG.RaidPartyLeader = nil
+Store.LoadGlobal()
+check( RPL.toasts == true, "настроек ещё нет: уведомления включены" )
 
 print( fails == 0 and "ВСЁ ОК" or ( "ИТОГ: ошибок " .. fails ) )
 os.exit( fails == 0 and 0 or 1 )
