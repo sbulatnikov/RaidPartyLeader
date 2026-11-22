@@ -101,7 +101,7 @@ wtext('Texts/RPLButton.Format.txt', html('<r name="button_label"/>', font='Conte
 wxml('Widgets/MainForm.(WidgetForm).xdb', f'''<?xml version="1.0" encoding="UTF-8" ?>
 <WidgetForm>
 \t<Name>MainForm</Name>
-\t<Priority>1000</Priority>
+\t<Priority>10000</Priority>
 \t<Children>
 \t\t<Item href="{WINDOW}" />
 \t\t<Item href="{RPLBUTTON}" />
@@ -120,7 +120,7 @@ wxml('Widgets/MainForm.(WidgetForm).xdb', f'''<?xml version="1.0" encoding="UTF-
 \t<Visible>true</Visible>
 </WidgetForm>
 ''')
-wtext('Texts/AddonName.txt', 'RaidPartyLeader v0.11.3')
+wtext('Texts/AddonName.txt', 'RaidPartyLeader v0.11.4')
 wtext('Texts/AddonDescription.txt', 'Сохраняет и собирает группы и отряды')
 wxml('AddonDesc.(UIAddon).xdb', f'''<?xml version="1.0" encoding="UTF-8" ?>
 <UIAddon>
@@ -130,7 +130,7 @@ wxml('AddonDesc.(UIAddon).xdb', f'''<?xml version="1.0" encoding="UTF-8" ?>
 \t\t<name href="Texts/AddonName.txt" />
 \t\t<description href="Texts/AddonDescription.txt" />
 \t\t<author>NoMercy</author>
-\t\t<version>0.11.3</version>
+\t\t<version>0.11.4</version>
 \t</userAddonInfo>
 \t<ScriptFileRefs>
 \t\t<Item href="Scripts/LibDnD.lua" />
