@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <WidgetForm>
 	<Name>MainForm</Name>
-	<Priority>1000</Priority>
+	<Priority>10000</Priority>
 	<Children>
 		<Item href="RPLWindow.(WidgetPanel).xdb" />
 		<Item href="RPLHost.(WidgetPanel).xdb" />
