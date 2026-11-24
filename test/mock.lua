@@ -80,7 +80,7 @@ function Widget.GetInstanceId( w ) return tostring( w ) end
 function Widget.DNDRegisterGeneric() return #all end
 function Widget.GetWidgetDesc( w ) return { from = w.name } end
 function Widget.CreateChildByDesc( w, d ) return NewW( d.from, w ) end
-mainForm = NewW( "MainForm" )
+mainForm = NewW( "RaidPartyLeader" )
 function FIND( name ) return mainForm:GetChildChecked( name, true ) end
 function TEXT( name ) local w = FIND( name ) return w.val and ( w.val.value or w.val.button_label ) or "" end
 

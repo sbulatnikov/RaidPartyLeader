@@ -63,7 +63,7 @@ react( "rpl_toggle" ) second()
 check( RPL.link == nil and RPL.tab == "current", "старт: без связи" )
 check( CONFIG.RaidPartyLeader.autoRetry == nil, "старт: ключ autoRetry убран" )
 check( FIND( "EmptyView" ).visible, "старт: «Вы не в группе»" )
-check( RPL.VERSION == "0.11.4", "версия 0.11.4" )
+check( RPL.VERSION == "0.11.5", "версия 0.11.5" )
 
 -- 2. Неизвестный состав: ровно как в сохранённом «Пати», но связи нет — угадывания больше нет
 SET( "party", { { ME, "Ксаэль", "Сельвия", "Тиаль", "Ферония", "Дорн" } } )
@@ -300,6 +300,24 @@ check( FIND( "BellIcon" ).tex == "tex:BELL_ON" and string.find( toast(), "вкл
 GCONFIG.RaidPartyLeader = nil
 Store.LoadGlobal()
 check( RPL.toasts == true, "настроек ещё нет: уведомления включены" )
+
+-- Форма раньше называлась MainForm: места кнопки и окон, сохранённые LibDnD, переезжают на новое имя формы
+GCONFIG.RaidPartyLeader = GCONFIG.RaidPartyLeader or {}
+GCONFIG.RaidPartyLeader.keepMe = 7
+GCONFIG.RaidPartyLeader[ "DnD:MainForm.RPLHost" ] = { posX = 111, posY = 222 }
+GCONFIG.RaidPartyLeader[ "DnD:MainForm.Twice" ] = { posX = 1 }
+GCONFIG.RaidPartyLeader[ "DnD:RaidPartyLeader.Twice" ] = { posX = 2 }
+RPL.MoveWindowPlaces()
+do
+	local cfg = GCONFIG.RaidPartyLeader
+	local moved = cfg[ "DnD:RaidPartyLeader.RPLHost" ]
+	check( mainForm:GetName() == "RaidPartyLeader", "форма называется именем аддона" )
+	check( moved and moved.posX == 111 and moved.posY == 222 and cfg[ "DnD:MainForm.RPLHost" ] == nil, "место окна переехало на новое имя формы, старый ключ убран" )
+	check( cfg[ "DnD:RaidPartyLeader.Twice" ].posX == 2 and cfg[ "DnD:MainForm.Twice" ] == nil, "место, уже сохранённое под новым именем, не затирается" )
+	check( cfg.keepMe == 7, "остальные настройки при переносе не тронуты" )
+end
+RPL.MoveWindowPlaces()
+check( GCONFIG.RaidPartyLeader[ "DnD:RaidPartyLeader.RPLHost" ].posX == 111, "повторный перенос ничего не меняет" )
 
 print( fails == 0 and "ВСЁ ОК" or ( "ИТОГ: ошибок " .. fails ) )
 os.exit( fails == 0 and 0 or 1 )
