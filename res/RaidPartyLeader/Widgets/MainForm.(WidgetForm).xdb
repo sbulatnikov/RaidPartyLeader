@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <WidgetForm>
-	<Name>MainForm</Name>
+	<Name>RaidPartyLeader</Name>
 	<Priority>10000</Priority>
 	<Children>
 		<Item href="RPLWindow.(WidgetPanel).xdb" />

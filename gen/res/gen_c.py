@@ -100,7 +100,7 @@ wtext('Texts/RPLButton.Format.txt', html('<r name="button_label"/>', font='Conte
 
 wxml('Widgets/MainForm.(WidgetForm).xdb', f'''<?xml version="1.0" encoding="UTF-8" ?>
 <WidgetForm>
-\t<Name>MainForm</Name>
+\t<Name>RaidPartyLeader</Name>
 \t<Priority>10000</Priority>
 \t<Children>
 \t\t<Item href="{WINDOW}" />

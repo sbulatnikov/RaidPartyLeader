@@ -1236,6 +1236,7 @@ local function Start()
 	RPL.Show( RPL.W( "SavedRow" ), false )
 	RenderBell()
 
+	RPL.MoveWindowPlaces()
 	DnD.Init( RPL.W( "RPLHost" ), RPL.W( "RPLButton" ), true, true )
 	DnD.Init( V.ui.window, RPL.W( "Header" ), true, true )
 	DnD.Init( RPL.W( "Toast" ), nil, true, true )
